@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(/c/Users/USER/Desktop/UniBridge_monorepo/unibridgefrontend/lib/types.ts:*)",
+      "Bash(/c/Users/USER/Desktop/UniBridge_monorepo/unibridgefrontend/lib/mock-data.ts:*)",
+      "Bash(python3:*)",
+      "Bash(where:*)",
+      "Bash(node --version:*)",
+      "Bash(node -e:*)"
     ]
   }
 }
