@@ -1,22 +1,26 @@
 import type { Metadata } from "next";
-import { Manrope, Space_Grotesk } from "next/font/google";
+import { Inter, Montserrat } from "next/font/google";
 import { AppToaster } from "@/components/app-toaster";
+import { UnicornBackground } from "@/components/ui/UnicornBackground";
+import { AmbientBackground } from "@/components/ui/AmbientBackground";
 import "./globals.css";
 
-const manrope = Manrope({
-  variable: "--font-manrope",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "UniBridge | Virtual Campus for Nigerian Universities",
   description:
-    "UniBridge is an AI-powered virtual campus platform with lecture summaries, resource moderation, opportunity matching, and student wellness tools.",
+    "The all-in-one platform bridging the gap between students, resources, and opportunities in the Nigerian university ecosystem.",
 };
 
 export default function RootLayout({
@@ -25,10 +29,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth bg-black">
       <body
-        className={`${manrope.variable} ${spaceGrotesk.variable} antialiased`}
+        className={`${inter.variable} ${montserrat.variable} font-sans antialiased text-neutral-300 relative selection:bg-emerald-600 selection:text-white overflow-x-hidden`}
       >
+        <UnicornBackground />
+        <AmbientBackground />
         {children}
         <AppToaster />
       </body>

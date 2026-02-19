@@ -157,64 +157,69 @@ export default function WellnessPage() {
   return (
     <div className="flex h-[calc(100vh-8rem)] gap-6 animate-fade-in">
       {/* Chat area */}
-      <div className="flex flex-1 flex-col overflow-hidden rounded-2xl border bg-white shadow-sm">
+      <div className="flex flex-1 flex-col overflow-hidden rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl shadow-2xl relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A8F6A]/5 to-transparent pointer-events-none"></div>
         {/* Chat header */}
-        <div className="flex items-center gap-3 border-b px-5 py-4">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10">
-            <HeartPulse className="h-5 w-5 text-primary" />
+        <div className="flex items-center gap-4 border-b border-white/5 px-6 py-5 relative z-10">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0A8F6A]/10 border border-[#0A8F6A]/20">
+            <HeartPulse className="h-6 w-6 text-[#0A8F6A]" />
           </div>
           <div>
-            <p className="font-semibold">Wellness Check-In</p>
-            <p className="text-xs text-muted-foreground">AI-powered support · Private & confidential</p>
+            <p className="text-lg font-medium tracking-tight text-white">Wellness Resonance</p>
+            <p className="text-xs text-neutral-500 font-light">AI Neural Support · Strategic Confidentiality</p>
           </div>
-          <div className="ml-auto flex items-center gap-1.5 rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-medium text-emerald-700">
-            <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            Online
+          <div className="ml-auto flex items-center gap-2 rounded-full bg-[#0A8F6A]/10 border border-[#0A8F6A]/20 px-3 py-1.5 text-[10px] font-bold text-[#0A8F6A] uppercase tracking-widest shadow-[0_0_10px_rgba(10,143,106,0.1)]">
+            <div className="h-1.5 w-1.5 rounded-full bg-[#0A8F6A] animate-pulse" />
+            Operational
           </div>
         </div>
 
         {/* Mood selector */}
-        <div className="border-b px-5 py-3">
-          <p className="mb-2 text-xs font-medium text-muted-foreground">How are you feeling today?</p>
-          <div className="flex gap-2">
+        <div className="border-b border-white/5 px-6 py-4 relative z-10">
+          <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Current Frequency</p>
+          <div className="flex gap-3">
             {MOODS.map(({ id, label, emoji }) => (
               <button
                 key={id}
                 onClick={() => setMood(id)}
                 title={label}
                 className={cn(
-                  "flex flex-col items-center gap-0.5 rounded-xl border px-2.5 py-1.5 text-xs transition-colors",
-                  mood === id ? "border-primary bg-accent" : "hover:bg-muted",
+                  "flex flex-col items-center gap-1.5 rounded-xl border px-4 py-2 text-xs transition-all duration-300",
+                  mood === id
+                    ? "border-[#0A8F6A] bg-[#0A8F6A]/10 text-white shadow-[0_0_15px_rgba(10,143,106,0.2)]"
+                    : "border-white/5 bg-white/5 text-neutral-500 hover:text-white hover:border-white/10",
                 )}
               >
-                <span className="text-base">{emoji}</span>
-                <span className="text-[10px] text-muted-foreground">{label}</span>
+                <span className="text-xl">{emoji}</span>
+                <span className="text-[10px] uppercase tracking-widest font-bold">{label}</span>
               </button>
             ))}
           </div>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+        <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6 relative z-10 custom-scrollbar">
           {chatLoading ? (
             <div className="flex h-full items-center justify-center">
-              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              <Loader2 className="h-8 w-8 animate-spin text-[#0A8F6A]" />
             </div>
           ) : messages.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center text-center">
-              <Smile className="h-12 w-12 text-muted-foreground/30" />
-              <p className="mt-3 text-sm font-medium text-muted-foreground">
-                Hi! I'm here to support you.
+              <div className="w-20 h-20 rounded-full bg-[#0A8F6A]/10 flex items-center justify-center mb-6">
+                <HeartPulse className="h-10 w-10 text-[#0A8F6A] animate-pulse" />
+              </div>
+              <p className="text-xl font-medium tracking-tight text-white mb-2">
+                Neural Connectivity Established
               </p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Share how you're feeling and I'll offer practical, caring support.
+              <p className="text-sm text-neutral-500 font-light max-w-xs leading-relaxed">
+                Transmit your current emotional frequency for tactical AI analysis and support.
               </p>
-              <div className="mt-6 flex flex-wrap justify-center gap-2">
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
                 {QUICK_MESSAGES.map((msg) => (
                   <button
                     key={msg}
                     onClick={() => void sendMessage(msg)}
-                    className="rounded-full border px-3 py-1.5 text-xs text-muted-foreground hover:bg-muted hover:text-foreground"
+                    className="rounded-full border border-white/10 bg-white/5 px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-neutral-400 hover:text-white hover:border-[#0A8F6A] transition-all"
                   >
                     {msg}
                   </button>
@@ -225,45 +230,44 @@ export default function WellnessPage() {
             messages.map((msg) => (
               <div
                 key={msg.id}
-                className={cn("flex", msg.role === "user" ? "justify-end" : "justify-start")}
+                className={cn("flex items-end gap-3", msg.role === "user" ? "flex-row-reverse" : "flex-row")}
               >
-                {msg.role === "assistant" && (
-                  <div className="mr-2 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 self-end">
-                    <HeartPulse className="h-3.5 w-3.5 text-primary" />
-                  </div>
-                )}
+                <div className={cn(
+                  "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border shadow-lg",
+                  msg.role === "user" ? "bg-white/10 border-white/20" : "bg-[#0A8F6A]/20 border-[#0A8F6A]/30"
+                )}>
+                  {msg.role === "assistant" ? <HeartPulse className="h-4 w-4 text-[#0A8F6A]" /> : <div className="h-4 w-4 rounded-full bg-white/30" />}
+                </div>
                 <div
                   className={cn(
-                    "max-w-[80%] rounded-2xl px-4 py-3 text-sm",
+                    "max-w-[75%] rounded-2xl px-5 py-3.5 text-sm font-light leading-relaxed shadow-2xl",
                     msg.role === "user"
-                      ? "rounded-br-sm bg-primary text-white"
-                      : "rounded-bl-sm bg-muted text-foreground",
+                      ? "rounded-br-sm bg-white/10 border border-white/10 text-white"
+                      : "rounded-bl-sm bg-black/40 border border-[#0A8F6A]/20 text-neutral-200 backdrop-blur-md",
                   )}
                 >
-                  <p className="whitespace-pre-wrap leading-relaxed">{msg.content}</p>
-                  <p
-                    className={cn(
-                      "mt-1 text-[10px]",
-                      msg.role === "user" ? "text-white/60" : "text-muted-foreground",
-                    )}
-                  >
-                    {timeAgo(msg.created_at)}
-                  </p>
+                  <p className="whitespace-pre-wrap">{msg.content}</p>
+                  <div className="mt-3 flex items-center gap-2">
+                    <div className={cn("h-px w-4", msg.role === "user" ? "bg-white/20" : "bg-[#0A8F6A]/30")}></div>
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-neutral-500">
+                      {timeAgo(msg.created_at)}
+                    </p>
+                  </div>
                 </div>
               </div>
             ))
           )}
           {loading && (
-            <div className="flex justify-start">
-              <div className="mr-2 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                <HeartPulse className="h-3.5 w-3.5 text-primary" />
+            <div className="flex items-end gap-3">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#0A8F6A]/10 border border-[#0A8F6A]/20">
+                <HeartPulse className="h-4 w-4 text-[#0A8F6A]" />
               </div>
-              <div className="rounded-2xl rounded-bl-sm bg-muted px-4 py-3">
-                <div className="flex gap-1">
+              <div className="rounded-2xl rounded-bl-sm bg-black/40 border border-[#0A8F6A]/10 px-6 py-4 backdrop-blur-md">
+                <div className="flex gap-2">
                   {[0, 1, 2].map((i) => (
                     <div
                       key={i}
-                      className="h-2 w-2 rounded-full bg-muted-foreground/40"
+                      className="h-2 w-2 rounded-full bg-[#0A8F6A]/40"
                       style={{ animation: `pulse-dot 1.5s ease-in-out ${i * 0.3}s infinite` }}
                     />
                   ))}
@@ -275,77 +279,78 @@ export default function WellnessPage() {
         </div>
 
         {/* Input */}
-        <div className="border-t px-4 py-3">
-          <div className="flex items-center gap-2">
+        <div className="border-t border-white/5 px-6 py-5 relative z-10 bg-black/20">
+          <div className="flex items-center gap-3">
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void sendMessage(); } }}
-              placeholder="Share how you're feeling…"
+              placeholder="Transmit psychological status..."
               disabled={loading}
-              className="flex-1 rounded-xl border bg-muted/40 px-4 py-2.5 text-sm outline-none ring-primary/50 transition-shadow focus:ring-2 disabled:opacity-60"
+              className="flex-1 rounded-xl border border-white/10 bg-black/20 px-5 py-3 text-sm text-white outline-none focus:border-[#0A8F6A]/50 transition-colors placeholder:text-neutral-600 disabled:opacity-60"
             />
             <button
               onClick={() => void sendMessage()}
               disabled={!input.trim() || loading}
-              className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+              className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#0A8F6A] text-white shadow-lg shadow-emerald-500/20 hover:opacity-90 disabled:opacity-40 transition-all"
             >
-              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
             </button>
           </div>
         </div>
       </div>
 
       {/* Right panel */}
-      <div className="hidden w-64 shrink-0 flex-col gap-4 lg:flex">
+      <div className="hidden w-72 shrink-0 flex-col gap-6 lg:flex">
         {/* Crisis resources */}
-        <div className="rounded-2xl border bg-white p-4 shadow-sm">
-          <div className="flex items-center gap-2 text-sm font-semibold text-destructive">
-            <AlertTriangle className="h-4 w-4" />
-            Crisis Support
+        <div className="glass-panel rounded-2xl p-6 border-white/5 shadow-2xl relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-tr from-red-500/5 to-transparent pointer-events-none"></div>
+          <div className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-red-500 mb-4 relative z-10">
+            <AlertTriangle className="h-4 w-4 shadow-[0_0_10px_rgba(239,68,68,0.3)]" />
+            Priority Support
           </div>
-          <p className="mt-2 text-xs text-muted-foreground">
-            If you're in immediate distress, please reach out:
+          <p className="text-xs text-neutral-400 font-light leading-relaxed mb-6 relative z-10">
+            If you're in immediate distress, please reach out to these authorized local protocols:
           </p>
-          <div className="mt-3 space-y-2">
+          <div className="space-y-3 relative z-10">
             {HOTLINES.map(({ name, number }) => (
-              <div key={name} className="rounded-xl border p-2.5">
-                <p className="text-xs font-medium">{name}</p>
+              <div key={name} className="rounded-xl border border-white/5 bg-white/5 p-4 hover:border-red-500/30 transition-all group">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-500 mb-2">{name}</p>
                 <a
                   href={`tel:${number}`}
-                  className="mt-0.5 flex items-center gap-1 text-xs text-primary hover:underline"
+                  className="flex items-center gap-2 text-sm font-medium text-white group-hover:text-red-400 transition-colors"
                 >
-                  <Phone className="h-3 w-3" /> {number}
+                  <Phone className="h-3.5 w-3.5 text-red-500" /> {number}
                 </a>
               </div>
             ))}
           </div>
         </div>
-
+ 
         {/* Tips */}
-        <div className="rounded-2xl border bg-white p-4 shadow-sm">
-          <p className="text-sm font-semibold">Quick Tips</p>
-          <div className="mt-3 space-y-2 text-xs text-muted-foreground">
+        <div className="glass-panel rounded-2xl p-6 border-white/5 shadow-2xl relative">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0A8F6A] mb-6">Resilience Protocols</p>
+          <div className="space-y-4 text-xs text-neutral-400 font-light leading-relaxed">
             {[
-              "Take a 5-minute break every 45 minutes of study.",
-              "Drink water and step outside for fresh air.",
-              "Break big tasks into small achievable steps.",
-              "Connect with a classmate — you're not alone.",
-              "Sleep is essential for memory and focus.",
+              "Implement 45/5 tactical study intervals.",
+              "Hydrate and execute outdoor grounding.",
+              "Deconstruct objectives into micro-tasks.",
+              "Sync with peers to distribute load.",
+              "Prioritize optimal biological recovery.",
             ].map((tip) => (
-              <div key={tip} className="flex gap-2">
-                <div className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+              <div key={tip} className="flex gap-3 items-start">
+                <div className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[#0A8F6A] shadow-[0_0_8px_rgba(10,143,106,0.6)]" />
                 <p>{tip}</p>
               </div>
             ))}
           </div>
         </div>
-
+ 
         {/* Privacy note */}
-        <div className="rounded-2xl border border-dashed p-4 text-center">
-          <p className="text-xs font-medium">Your conversations are private</p>
-          <p className="mt-1 text-[10px] text-muted-foreground">
-            Only you can see your chat history. We never share your wellness data.
+        <div className="rounded-2xl border border-dashed border-white/10 bg-white/[0.01] p-6 text-center">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-2">Secure Channel</p>
+          <p className="text-[10px] text-neutral-600 font-light leading-relaxed">
+            End-to-end data isolation active. Conversations are restricted to your local instance.
           </p>
         </div>
       </div>

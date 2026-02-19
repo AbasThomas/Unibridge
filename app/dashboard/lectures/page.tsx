@@ -126,8 +126,8 @@ export default function LecturesPage() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-xl font-bold">Lectures</h1>
-          <p className="mt-0.5 text-sm text-muted-foreground">
+          <h1 className="text-2xl font-semibold tracking-tight text-white">Lectures</h1>
+          <p className="mt-1 text-sm text-neutral-400 font-light">
             Join live sessions, watch recordings, or get AI summaries.
           </p>
         </div>
@@ -135,24 +135,24 @@ export default function LecturesPage() {
 
       {/* Tabs + Search */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <div className="flex gap-1 rounded-xl border bg-white p-1">
+        <div className="flex gap-1 rounded-xl border border-white/10 bg-black/20 p-1 backdrop-blur-sm">
           {TABS.map(({ id, label, count }) => (
             <button
               key={id}
               onClick={() => setTab(id)}
               className={cn(
-                "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
+                "rounded-lg px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all",
                 tab === id
-                  ? "bg-primary text-white"
-                  : "text-muted-foreground hover:text-foreground",
+                  ? "bg-[#0A8F6A] text-white shadow-[0_0_15px_rgba(10,143,106,0.3)]"
+                  : "text-neutral-500 hover:text-white hover:bg-white/5",
               )}
             >
               {label}
               {count !== undefined && count > 0 && (
                 <span
                   className={cn(
-                    "ml-1.5 rounded-full px-1.5 py-0.5 text-[10px] font-bold",
-                    tab === id ? "bg-white/20" : "bg-muted",
+                    "ml-2 rounded-full px-1.5 py-0.5 text-[10px] font-bold",
+                    tab === id ? "bg-white/20" : "bg-white/5 text-neutral-500",
                   )}
                 >
                   {count}
@@ -162,13 +162,13 @@ export default function LecturesPage() {
           ))}
         </div>
 
-        <div className="flex items-center gap-2 rounded-xl border bg-white px-3 py-2 sm:ml-auto">
-          <Search className="h-4 w-4 text-muted-foreground" />
+        <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-black/20 px-4 py-2.5 sm:ml-auto focus-within:border-[#0A8F6A]/50 transition-colors">
+          <Search className="h-4 w-4 text-neutral-500" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search lectures…"
-            className="w-48 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+            className="w-48 bg-transparent text-sm outline-none text-neutral-200 placeholder:text-neutral-500"
           />
         </div>
       </div>
@@ -189,112 +189,109 @@ export default function LecturesPage() {
           </p>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((lecture) => (
             <div
               key={lecture.id}
-              className="flex flex-col rounded-2xl border bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
+              className="glass-panel flex flex-col rounded-2xl p-6 shadow-2xl group hover:border-[#0A8F6A]/30 transition-all duration-500"
             >
               {/* Header */}
               <div className="flex items-start justify-between gap-2">
                 <div
                   className={cn(
-                    "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white",
-                    lecture.is_live ? "bg-red-500" : "bg-primary",
+                    "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white shadow-lg",
+                    lecture.is_live ? "bg-red-500 shadow-red-500/20 animate-pulse" : "bg-[#0A8F6A] shadow-emerald-500/20",
                   )}
                 >
-                  {lecture.is_live ? <Radio className="h-5 w-5" /> : <Video className="h-5 w-5" />}
+                  {lecture.is_live ? <Radio className="h-6 w-6" /> : <Video className="h-6 w-6" />}
                 </div>
                 <div className="flex flex-wrap gap-1">
                   {lecture.is_live && (
-                    <span className="badge-live rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-semibold text-red-700">
+                    <span className="rounded-full bg-red-500/10 border border-red-500/20 px-3 py-1 text-[10px] font-bold text-red-500 tracking-widest uppercase">
                       LIVE
                     </span>
                   )}
                   {lecture.is_recorded && (
-                    <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-medium text-blue-700">
+                    <span className="rounded-full bg-[#0A8F6A]/10 border border-[#0A8F6A]/20 px-3 py-1 text-[10px] font-bold text-[#0A8F6A] tracking-widest uppercase">
                       Recorded
-                    </span>
-                  )}
-                  {lecture.offline_available && (
-                    <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-green-700">
-                      Offline
                     </span>
                   )}
                 </div>
               </div>
 
               {/* Info */}
-              <div className="mt-3 flex-1">
-                <p className="text-sm font-semibold leading-snug">{lecture.title}</p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {lecture.course_code} · {lecture.lecturer_name}
+              <div className="mt-6 flex-1">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-[#0A8F6A] font-semibold mb-2">{lecture.course_code}</p>
+                <p className="text-lg font-medium leading-tight text-white group-hover:text-[#0A8F6A] transition-colors duration-300">{lecture.title}</p>
+                <p className="mt-2 text-sm text-neutral-400 font-light">
+                  {lecture.lecturer_name}
                 </p>
                 {lecture.description && (
-                  <p className="mt-2 line-clamp-2 text-xs text-muted-foreground">
+                  <p className="mt-4 line-clamp-2 text-xs text-neutral-500 font-light leading-relaxed">
                     {lecture.description}
                   </p>
                 )}
               </div>
 
               {/* Meta */}
-              <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  <Calendar className="h-3 w-3" />
+              <div className="mt-6 space-y-2 pt-6 border-t border-white/5">
+                <div className="flex items-center gap-3 text-[10px] font-medium uppercase tracking-widest text-neutral-500">
+                  <Calendar className="h-3.5 w-3.5 text-[#0A8F6A]" />
                   {formatDateTime(lecture.scheduled_at)}
-                </span>
-              </div>
-              <div className="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  <Clock className="h-3 w-3" /> {lecture.duration ?? 60} min
-                </span>
-                <span className="flex items-center gap-1">
-                  <Users className="h-3 w-3" /> {lecture.attendees}
-                </span>
+                </div>
+                <div className="flex items-center gap-4 text-[10px] font-medium uppercase tracking-widest text-neutral-500">
+                  <span className="flex items-center gap-1.5">
+                    <Clock className="h-3.5 w-3.5 text-[#0A8F6A]" /> {lecture.duration ?? 60} MIN
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Users className="h-3.5 w-3.5 text-[#0A8F6A]" /> {lecture.attendees} ACCESSES
+                  </span>
+                </div>
               </div>
 
               {/* AI summary */}
               {summaries[lecture.id] && (
-                <div className="mt-3 rounded-xl bg-accent p-3 text-xs text-accent-foreground">
-                  <p className="font-medium">AI Summary</p>
-                  <p className="mt-1">{summaries[lecture.id]}</p>
+                <div className="mt-6 rounded-xl bg-[#0A8F6A]/5 border border-[#0A8F6A]/20 p-4 text-xs font-light leading-relaxed text-neutral-300">
+                  <p className="font-bold uppercase tracking-[0.2em] text-[#0A8F6A] mb-2 text-[10px]">AI Insight Summary</p>
+                  <p>{summaries[lecture.id]}</p>
                 </div>
               )}
 
               {/* Actions */}
-              <div className="mt-4 flex gap-2">
-                {lecture.is_live && (
+              <div className="mt-6 flex gap-3">
+                {lecture.is_live ? (
                   <a
                     href={lecture.stream_url ?? "#"}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-red-500 py-2 text-xs font-semibold text-white hover:bg-red-600"
+                    className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-red-500 px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-white hover:bg-red-600 transition-all shadow-lg shadow-red-500/20"
                   >
                     <Play className="h-3.5 w-3.5" /> Join Live
                   </a>
-                )}
-                {lecture.is_recorded && (
-                  <a
-                    href={lecture.recording_url ?? "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-primary py-2 text-xs font-semibold text-white"
-                  >
-                    <Play className="h-3.5 w-3.5" /> Watch
-                  </a>
+                ) : (
+                  lecture.is_recorded && (
+                    <a
+                      href={lecture.recording_url ?? "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#0A8F6A] px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-white hover:opacity-90 transition-all shadow-lg shadow-emerald-500/20"
+                    >
+                      <Play className="h-3.5 w-3.5" /> Watch
+                    </a>
+                  )
                 )}
                 {lecture.offline_available && (
-                  <button className="flex items-center justify-center rounded-xl border p-2 hover:bg-muted">
-                    <Download className="h-3.5 w-3.5" />
+                  <button className="flex items-center justify-center rounded-lg border border-white/10 bg-white/5 p-2.5 text-neutral-400 hover:text-white hover:border-white/20 transition-all">
+                    <Download className="h-4 w-4" />
                   </button>
                 )}
                 <button
                   onClick={() => void handleSummarize(lecture)}
                   disabled={summarizingId === lecture.id}
-                  className="flex items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium hover:bg-muted disabled:opacity-60"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest text-neutral-400 hover:text-white hover:border-white/20 transition-all disabled:opacity-60"
                 >
-                  <Sparkles className="h-3.5 w-3.5 text-primary" />
-                  {summarizingId === lecture.id ? "…" : "AI Summary"}
+                  <Sparkles className="h-3.5 w-3.5 text-[#0A8F6A]" />
+                  {summarizingId === lecture.id ? "..." : "AI Sync"}
                 </button>
               </div>
             </div>

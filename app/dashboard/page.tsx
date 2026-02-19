@@ -29,14 +29,14 @@ function StatCard({
   color: string;
 }) {
   return (
-    <div className="rounded-2xl border bg-white p-5 shadow-sm">
+    <div className="glass-panel p-5 rounded-2xl group hover:border-emerald-600/30 transition-all duration-300">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm text-muted-foreground">{label}</p>
-          <p className="mt-1 text-2xl font-bold">{value}</p>
-          {sub && <p className="mt-0.5 text-xs text-muted-foreground">{sub}</p>}
+          <p className="text-sm text-neutral-400 group-hover:text-emerald-500/80 transition-colors">{label}</p>
+          <p className="mt-1 text-2xl font-bold text-white group-hover:text-emerald-400 transition-colors">{value}</p>
+          {sub && <p className="mt-0.5 text-xs text-neutral-500">{sub}</p>}
         </div>
-        <div className={cn("rounded-xl p-2.5", color)}>
+        <div className={cn("rounded-xl p-2.5 bg-white/5 border border-white/5 text-white group-hover:scale-110 transition-transform duration-300")}>
           <Icon className="h-5 w-5" />
         </div>
       </div>
@@ -88,29 +88,32 @@ export default async function DashboardPage() {
   const liveLectures = lectures.filter((l) => l.is_live);
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 animate-reveal">
       {/* Welcome banner */}
-      <div className="rounded-2xl bg-hero-gradient p-6 text-white">
-        <p className="text-sm text-white/70">Good day 👋</p>
-        <h1 className="mt-1 text-2xl font-bold">Welcome back, {displayName}</h1>
-        <p className="mt-1 text-sm text-white/80">
-          {profile.university ?? "University of Lagos"} ·{" "}
-          <span className="capitalize">{profile.role ?? "student"}</span> ·{" "}
-          <span className="capitalize">{profile.plan ?? "basic"} plan</span>
-        </p>
-        <div className="mt-4 flex flex-wrap gap-3">
-          <Link
-            href="/dashboard/lectures"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-white/20 px-3 py-1.5 text-xs font-medium hover:bg-white/30"
-          >
-            <Video className="h-3.5 w-3.5" /> View Lectures
-          </Link>
-          <Link
-            href="/dashboard/opportunities"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-white/20 px-3 py-1.5 text-xs font-medium hover:bg-white/30"
-          >
-            <Trophy className="h-3.5 w-3.5" /> Find Opportunities
-          </Link>
+      <div className="rounded-2xl bg-hero-gradient p-6 text-white relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-emerald-600/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+        <div className="relative z-10">
+          <p className="text-sm text-emerald-100/70">Good day 👋</p>
+          <h1 className="mt-1 text-2xl font-bold tracking-tight">Welcome back, {displayName}</h1>
+          <p className="mt-1 text-sm text-emerald-100/80">
+            {profile.university ?? "University of Lagos"} ·{" "}
+            <span className="capitalize">{profile.role ?? "student"}</span> ·{" "}
+            <span className="capitalize">{profile.plan ?? "basic"} plan</span>
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link
+              href="/dashboard/lectures"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-white/10 border border-white/20 px-4 py-2 text-xs font-medium hover:bg-white/20 hover:border-white/30 transition-all backdrop-blur-sm"
+            >
+              <Video className="h-3.5 w-3.5" /> View Lectures
+            </Link>
+            <Link
+              href="/dashboard/opportunities"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-900/40 border border-emerald-500/30 px-4 py-2 text-xs font-medium hover:bg-emerald-900/60 hover:border-emerald-500/50 transition-all backdrop-blur-sm text-emerald-100"
+            >
+              <Trophy className="h-3.5 w-3.5" /> Find Opportunities
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -121,68 +124,68 @@ export default async function DashboardPage() {
           value={lectures.length}
           sub={`${liveLectures.length} live now`}
           icon={Video}
-          color="bg-blue-100 text-blue-700"
+          color="bg-transparent"
         />
         <StatCard
           label="Resources Available"
           value={resources.length}
           sub="Browse marketplace"
           icon={BookOpen}
-          color="bg-emerald-100 text-emerald-700"
+          color="bg-transparent"
         />
         <StatCard
           label="Opportunities"
           value={opportunities.length}
           sub="Open applications"
           icon={Trophy}
-          color="bg-orange-100 text-orange-700"
+          color="bg-transparent"
         />
         <StatCard
           label="Points Earned"
           value={profile.points ?? 0}
           sub="Gamification score"
           icon={HeartPulse}
-          color="bg-purple-100 text-purple-700"
+          color="bg-transparent"
         />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Recent Lectures */}
-        <div className="rounded-2xl border bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between">
-            <h2 className="font-semibold">Recent Lectures</h2>
-            <Link href="/dashboard/lectures" className="flex items-center gap-1 text-xs text-primary hover:underline">
+        <div className="glass-panel p-5 rounded-2xl relative overflow-hidden">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-medium text-white tracking-tight">Recent Lectures</h2>
+            <Link href="/dashboard/lectures" className="flex items-center gap-1 text-xs text-emerald-500 hover:text-emerald-400 hover:underline transition-colors">
               View all <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
 
-          <div className="mt-4 space-y-3">
+          <div className="space-y-3">
             {lectures.length === 0 ? (
-              <div className="rounded-xl border-2 border-dashed py-8 text-center text-sm text-muted-foreground">
+              <div className="rounded-xl border border-dashed border-white/10 py-8 text-center text-sm text-neutral-500 bg-white/5">
                 No lectures yet. Check back soon.
               </div>
             ) : (
               lectures.map((lecture) => (
-                <div key={lecture.id} className="flex items-start gap-3 rounded-xl border p-3">
+                <div key={lecture.id} className="flex items-start gap-3 rounded-xl border border-white/5 bg-white/5 p-3 hover:bg-white/10 transition-colors group">
                   <div className={cn(
-                    "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-white",
-                    lecture.is_live ? "bg-red-500" : "bg-primary",
+                    "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white shadow-lg",
+                    lecture.is_live ? "bg-red-500/80 shadow-red-500/20 animate-pulse" : "bg-emerald-600/80 shadow-emerald-500/20",
                   )}>
                     <Video className="h-4 w-4" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <p className="truncate text-sm font-medium">{lecture.title}</p>
+                      <p className="truncate text-sm font-medium text-neutral-200 group-hover:text-white transition-colors">{lecture.title}</p>
                       {lecture.is_live && (
-                        <span className="badge-live shrink-0 text-[10px] font-semibold text-red-600">
+                        <span className="badge-live shrink-0 text-[10px] font-semibold text-red-500">
                           LIVE
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-neutral-500">
                       {lecture.course_code} · {lecture.lecturer_name}
                     </p>
-                    <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
+                    <p className="mt-0.5 flex items-center gap-1 text-xs text-neutral-500">
                       <Calendar className="h-3 w-3" />
                       {formatDateTime(lecture.scheduled_at)}
                     </p>
@@ -190,7 +193,7 @@ export default async function DashboardPage() {
                   {lecture.is_live && (
                     <Link
                       href={`/dashboard/lectures`}
-                      className="shrink-0 rounded-lg bg-primary px-2 py-1 text-[10px] font-semibold text-white"
+                      className="shrink-0 rounded-lg bg-red-500 px-2.5 py-1 text-[10px] font-semibold text-white hover:bg-red-600 transition-colors shadow-lg shadow-red-500/20"
                     >
                       Join
                     </Link>
@@ -202,34 +205,34 @@ export default async function DashboardPage() {
         </div>
 
         {/* Recent Resources */}
-        <div className="rounded-2xl border bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between">
-            <h2 className="font-semibold">Recent Resources</h2>
-            <Link href="/dashboard/resources" className="flex items-center gap-1 text-xs text-primary hover:underline">
+        <div className="glass-panel p-5 rounded-2xl relative overflow-hidden">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-medium text-white tracking-tight">Recent Resources</h2>
+            <Link href="/dashboard/resources" className="flex items-center gap-1 text-xs text-emerald-500 hover:text-emerald-400 hover:underline transition-colors">
               View all <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
 
-          <div className="mt-4 space-y-3">
+          <div className="space-y-3">
             {resources.length === 0 ? (
-              <div className="rounded-xl border-2 border-dashed py-8 text-center text-sm text-muted-foreground">
+              <div className="rounded-xl border border-dashed border-white/10 py-8 text-center text-sm text-neutral-500 bg-white/5">
                 No resources yet. Be the first to upload!
               </div>
             ) : (
               resources.map((resource) => (
-                <div key={resource.id} className="flex items-start gap-3 rounded-xl border p-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-muted">
-                    <BookOpen className="h-4 w-4 text-muted-foreground" />
+                <div key={resource.id} className="flex items-start gap-3 rounded-xl border border-white/5 bg-white/5 p-3 hover:bg-white/10 transition-colors group">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/5 border border-white/5 text-neutral-400 group-hover:text-white transition-colors">
+                    <BookOpen className="h-4 w-4" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium">{resource.title}</p>
+                    <p className="truncate text-sm font-medium text-neutral-200 group-hover:text-white transition-colors">{resource.title}</p>
                     <div className="mt-1 flex items-center gap-2">
-                      <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-medium", getResourceTypeColor(resource.type))}>
+                      <span className={cn("rounded-md px-1.5 py-0.5 text-[10px] font-medium border border-white/5 bg-white/5 text-neutral-400")}>
                         {resource.type}
                       </span>
-                      <span className="text-xs text-muted-foreground">{resource.course_code}</span>
+                      <span className="text-xs text-neutral-500">{resource.course_code}</span>
                     </div>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
+                    <p className="mt-0.5 text-xs text-neutral-500">
                       {resource.downloads} downloads · ⭐ {resource.rating} · {timeAgo(resource.created_at)}
                     </p>
                   </div>
@@ -241,33 +244,33 @@ export default async function DashboardPage() {
       </div>
 
       {/* Opportunities */}
-      <div className="rounded-2xl border bg-white p-5 shadow-sm">
-        <div className="flex items-center justify-between">
-          <h2 className="font-semibold">Open Opportunities</h2>
-          <Link href="/dashboard/opportunities" className="flex items-center gap-1 text-xs text-primary hover:underline">
+      <div className="glass-panel p-5 rounded-2xl relative overflow-hidden">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-medium text-white tracking-tight">Open Opportunities</h2>
+          <Link href="/dashboard/opportunities" className="flex items-center gap-1 text-xs text-emerald-500 hover:text-emerald-400 hover:underline transition-colors">
             View all <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
 
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {opportunities.length === 0 ? (
-            <div className="col-span-4 rounded-xl border-2 border-dashed py-8 text-center text-sm text-muted-foreground">
+            <div className="col-span-4 rounded-xl border border-dashed border-white/10 py-8 text-center text-sm text-neutral-500 bg-white/5">
               No opportunities found. Check back later.
             </div>
           ) : (
             opportunities.map((opp) => (
-              <div key={opp.id} className="rounded-xl border p-4 hover:shadow-sm transition-shadow">
-                <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-medium", getOpportunityTypeColor(opp.type))}>
+              <div key={opp.id} className="rounded-xl border border-white/5 bg-white/5 p-4 hover:bg-white/10 hover:border-white/10 transition-all group cursor-pointer">
+                <span className={cn("rounded-md px-2 py-0.5 text-[10px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20")}>
                   {opp.type}
                 </span>
-                <p className="mt-2 text-sm font-medium leading-snug">{opp.title}</p>
-                <p className="mt-1 text-xs text-muted-foreground">{opp.organization}</p>
+                <p className="mt-3 text-sm font-medium leading-snug text-neutral-200 group-hover:text-white transition-colors line-clamp-2 min-h-[2.5rem]">{opp.title}</p>
+                <p className="mt-1 text-xs text-neutral-500">{opp.organization}</p>
                 {opp.amount && (
-                  <p className="mt-1 text-sm font-semibold text-primary">{formatNaira(opp.amount)}</p>
+                  <p className="mt-2 text-sm font-semibold text-emerald-400">{formatNaira(opp.amount)}</p>
                 )}
-                <p className="mt-2 text-xs text-muted-foreground">
-                  Deadline: {new Date(opp.deadline).toLocaleDateString("en-NG", { day: "numeric", month: "short" })}
-                  {opp.is_remote && " · Remote"}
+                <p className="mt-2 text-xs text-neutral-500 pt-2 border-t border-white/5 flex justify-between items-center">
+                  <span>{new Date(opp.deadline).toLocaleDateString("en-NG", { day: "numeric", month: "short" })}</span>
+                  {opp.is_remote && <span className="text-neutral-400">Remote</span>}
                 </p>
               </div>
             ))

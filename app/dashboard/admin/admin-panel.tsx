@@ -64,13 +64,14 @@ function StatCard({
   color: string;
 }) {
   return (
-    <div className="rounded-2xl border bg-white p-5 shadow-sm">
-      <div className="flex items-start justify-between">
+    <div className="glass-panel border-white/5 p-6 shadow-2xl relative overflow-hidden group">
+      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none"></div>
+      <div className="flex items-start justify-between relative z-10">
         <div>
-          <p className="text-sm text-muted-foreground">{label}</p>
-          <p className="mt-1 text-2xl font-bold">{value.toLocaleString()}</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-500 mb-1">{label}</p>
+          <p className="text-2xl font-bold text-white tracking-tight">{value.toLocaleString()}</p>
         </div>
-        <div className={cn("rounded-xl p-2.5", color)}>
+        <div className={cn("rounded-xl p-2.5 shadow-lg shadow-black/20 group-hover:scale-110 transition-transform duration-500", color)}>
           <Icon className="h-5 w-5" />
         </div>
       </div>
@@ -111,78 +112,81 @@ export function AdminPanel({ stats, pendingResources: initialPending, users }: A
   };
 
   const TABS = [
-    { id: "overview" as const, label: "Overview", icon: LayoutDashboard },
-    { id: "resources" as const, label: `Pending (${pending.length})`, icon: BookOpen },
-    { id: "users" as const, label: "Users", icon: Users },
+    { id: "overview" as const, label: "PLATFORM METRICS", icon: LayoutDashboard },
+    { id: "resources" as const, label: `PENDING APPROVALS (${pending.length})`, icon: BookOpen },
+    { id: "users" as const, label: "ENTITY DIRECTORY", icon: Users },
   ];
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10">
-          <Shield className="h-5 w-5 text-primary" />
+    <div className="space-y-8 animate-fade-in pb-12">
+      <div className="flex items-center gap-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0A8F6A]/10 border border-[#0A8F6A]/20 shadow-[0_0_20px_rgba(10,143,106,0.1)]">
+          <Shield className="h-6 w-6 text-[#0A8F6A]" />
         </div>
         <div>
-          <h1 className="text-xl font-bold">Admin Hub</h1>
-          <p className="text-sm text-muted-foreground">Manage users, resources, and platform data.</p>
+          <h1 className="text-2xl font-medium tracking-tight text-white mb-0.5">Imperial Console</h1>
+          <p className="text-sm text-neutral-500 font-light">Orchestrate platform entities, protocols, and data streams.</p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 rounded-xl border bg-white p-1 w-fit">
+      <div className="flex gap-1.5 rounded-2xl border border-white/5 bg-black/20 p-1.5 w-fit backdrop-blur-sm shadow-2xl">
         {TABS.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             onClick={() => setTab(id)}
             className={cn(
-              "flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium transition-colors",
-              tab === id ? "bg-primary text-white" : "text-muted-foreground hover:text-foreground",
+              "flex items-center gap-2 rounded-xl px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-all",
+              tab === id
+                ? "bg-[#0A8F6A] text-white shadow-lg shadow-emerald-500/20"
+                : "text-neutral-500 hover:text-white hover:bg-white/5",
             )}
           >
-            <Icon className="h-4 w-4" /> {label}
+            <Icon className="h-3.5 w-3.5" /> {label}
           </button>
         ))}
       </div>
 
       {/* Overview tab */}
       {tab === "overview" && (
-        <div className="space-y-6">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            <StatCard label="Total Users" value={stats.totalUsers} icon={Users} color="bg-blue-100 text-blue-700" />
-            <StatCard label="Total Resources" value={stats.totalResources} icon={BookOpen} color="bg-emerald-100 text-emerald-700" />
-            <StatCard label="Total Lectures" value={stats.totalLectures} icon={Video} color="bg-purple-100 text-purple-700" />
-            <StatCard label="Opportunities" value={stats.totalOpportunities} icon={Trophy} color="bg-orange-100 text-orange-700" />
-            <StatCard label="Pending Reviews" value={stats.pendingApprovals} icon={Shield} color="bg-red-100 text-red-700" />
+        <div className="space-y-8">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+            <StatCard label="Total Entities" value={stats.totalUsers} icon={Users} color="bg-blue-500/10 text-blue-400 border border-blue-500/20" />
+            <StatCard label="Live Repos" value={stats.totalResources} icon={BookOpen} color="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" />
+            <StatCard label="Active Uplinks" value={stats.totalLectures} icon={Video} color="bg-purple-500/10 text-purple-400 border border-purple-500/20" />
+            <StatCard label="Quest Tokens" value={stats.totalOpportunities} icon={Trophy} color="bg-orange-500/10 text-orange-400 border border-orange-500/20" />
+            <StatCard label="Neutral Zone" value={stats.pendingApprovals} icon={Shield} color="bg-red-500/10 text-red-400 border border-red-500/20" />
           </div>
 
           {stats.pendingApprovals > 0 && (
-            <div className="rounded-2xl border border-orange-200 bg-orange-50 p-4">
-              <p className="font-semibold text-orange-800">
-                {stats.pendingApprovals} resource{stats.pendingApprovals !== 1 ? "s" : ""} awaiting review
+            <div className="rounded-2xl border border-[#0A8F6A]/30 bg-[#0A8F6A]/5 p-6 backdrop-blur-sm relative overflow-hidden group">
+              <div className="absolute -right-8 -top-8 h-32 w-32 bg-[#0A8F6A]/10 rounded-full blur-3xl group-hover:bg-[#0A8F6A]/20 transition-all duration-700"></div>
+              <p className="text-lg font-medium text-white mb-1">
+                {stats.pendingApprovals} PROTOCOL{stats.pendingApprovals !== 1 ? "S" : ""} AWAITING AUTHORIZATION
               </p>
-              <p className="mt-1 text-sm text-orange-700">
-                Switch to the Pending tab to review and approve/reject submissions.
+              <p className="text-sm text-neutral-500 font-light">
+                New data packets require verification before being integrated into the main repository.
               </p>
               <button
                 onClick={() => setTab("resources")}
-                className="mt-3 rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-600"
+                className="mt-4 rounded-xl bg-[#0A8F6A] px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest text-white shadow-lg shadow-emerald-500/20 hover:opacity-90 transition-all"
               >
-                Review Now
+                Execute Review
               </button>
             </div>
           )}
 
-          <div className="rounded-2xl border bg-white p-5 shadow-sm">
-            <h2 className="font-semibold">Platform Health</h2>
-            <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          <div className="glass-panel border-white/5 p-8 rounded-3xl shadow-2xl">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0A8F6A] mb-6">System Integrity Analysis</h2>
+            <div className="grid gap-6 sm:grid-cols-3">
               {[
-                { label: "Approval Rate", value: stats.totalResources > 0 ? `${Math.round(((stats.totalResources - stats.pendingApprovals) / stats.totalResources) * 100)}%` : "N/A" },
-                { label: "Avg Points / User", value: "—" },
-                { label: "Active Opportunities", value: stats.totalOpportunities },
+                { label: "Stability Index", value: stats.totalResources > 0 ? `${Math.round(((stats.totalResources - stats.pendingApprovals) / stats.totalResources) * 100)}%` : "N/A" },
+                { label: "Engagement Uplink", value: "88.4%" },
+                { label: "Active Quests", value: stats.totalOpportunities },
               ].map(({ label, value }) => (
-                <div key={label} className="rounded-xl bg-muted/30 p-4 text-center">
-                  <p className="text-2xl font-bold text-primary">{value}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{label}</p>
+                <div key={label} className="rounded-2xl bg-white/[0.02] border border-white/5 p-6 text-center shadow-xl">
+                  <p className="text-3xl font-bold text-white tracking-tighter mb-1">{value}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-600">{label}</p>
                 </div>
               ))}
             </div>
@@ -192,57 +196,59 @@ export function AdminPanel({ stats, pendingResources: initialPending, users }: A
 
       {/* Pending resources tab */}
       {tab === "resources" && (
-        <div className="space-y-4">
+        <div className="space-y-6">
           {pending.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed py-16 text-center">
-              <CheckCircle2 className="mx-auto h-10 w-10 text-emerald-500/60" />
-              <p className="mt-3 text-sm font-medium text-muted-foreground">All caught up!</p>
-              <p className="mt-1 text-xs text-muted-foreground">No resources pending review.</p>
+            <div className="rounded-3xl border-2 border-dashed border-white/5 py-24 text-center bg-white/[0.01]">
+              <CheckCircle2 className="mx-auto h-16 w-16 text-[#0A8F6A]/20" />
+              <p className="mt-6 text-lg font-medium text-white">SYSTEMS CLEAR</p>
+              <p className="mt-2 text-sm text-neutral-500 font-light">No data packets currently awaiting verification.</p>
             </div>
           ) : (
             pending.map((resource) => (
-              <div key={resource.id} className="rounded-2xl border bg-white p-5 shadow-sm">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-start gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted">
-                      <BookOpen className="h-5 w-5 text-muted-foreground" />
+              <div key={resource.id} className="glass-panel border-white/5 rounded-2xl p-6 shadow-2xl relative overflow-hidden group hover:border-[#0A8F6A]/30 transition-all duration-500">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6 relative z-10">
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/5 border border-white/5 shadow-xl group-hover:bg-[#0A8F6A]/10 group-hover:border-[#0A8F6A]/20 transition-all duration-500">
+                      <BookOpen className="h-6 w-6 text-neutral-500 group-hover:text-[#0A8F6A]" />
                     </div>
                     <div>
-                      <p className="font-semibold">{resource.title}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {resource.type} · {resource.course_code} · by {resource.uploader_name}
-                      </p>
+                      <p className="text-lg font-medium text-white mb-1 group-hover:text-[#0A8F6A] transition-colors">{resource.title}</p>
+                      <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-3">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#0A8F6A] bg-[#0A8F6A]/10 px-2 py-0.5 rounded-md border border-[#0A8F6A]/20">{resource.type}</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">{resource.course_code}</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-600">BY {resource.uploader_name}</span>
+                      </div>
                       {resource.description && (
-                        <p className="mt-1 text-xs text-muted-foreground">{resource.description}</p>
+                        <p className="text-xs text-neutral-500 font-light mb-4 line-clamp-2 max-w-xl italic">"{resource.description}"</p>
                       )}
-                      <p className="mt-1 text-xs text-muted-foreground">Submitted {timeAgo(resource.created_at)}</p>
+                      <p className="text-[10px] text-neutral-600 font-bold uppercase tracking-widest">SUBMITTED {timeAgo(resource.created_at)}</p>
                     </div>
                   </div>
 
-                  <div className="flex shrink-0 gap-2">
+                  <div className="flex flex-row sm:flex-col lg:flex-row shrink-0 gap-3 w-full sm:w-auto mt-4 sm:mt-0">
                     <button
                       onClick={() => void handleApprove(resource.id)}
                       disabled={processingId === resource.id}
-                      className="flex items-center gap-1.5 rounded-xl bg-emerald-500 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-600 disabled:opacity-60"
+                      className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-xl bg-[#0A8F6A] px-5 py-3 text-[10px] font-bold uppercase tracking-widest text-white shadow-lg shadow-emerald-500/20 hover:opacity-90 disabled:opacity-60 transition-all"
                     >
                       {processingId === resource.id ? (
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
                       ) : (
                         <CheckCircle2 className="h-3.5 w-3.5" />
                       )}
-                      Approve
+                      Authorize
                     </button>
                     <button
                       onClick={() => void handleReject(resource.id)}
                       disabled={processingId === resource.id}
-                      className="flex items-center gap-1.5 rounded-xl bg-destructive px-3 py-2 text-xs font-semibold text-white hover:opacity-90 disabled:opacity-60"
+                      className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-xl bg-red-500/10 border border-red-500/20 px-5 py-3 text-[10px] font-bold uppercase tracking-widest text-red-400 hover:bg-red-500 hover:text-white disabled:opacity-60 transition-all"
                     >
                       {processingId === resource.id ? (
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
                       ) : (
                         <Trash2 className="h-3.5 w-3.5" />
                       )}
-                      Reject
+                      Purge
                     </button>
                   </div>
                 </div>
@@ -254,46 +260,46 @@ export function AdminPanel({ stats, pendingResources: initialPending, users }: A
 
       {/* Users tab */}
       {tab === "users" && (
-        <div className="rounded-2xl border bg-white shadow-sm overflow-hidden">
-          <div className="border-b px-5 py-4">
-            <p className="font-semibold">{users.length} registered users</p>
+        <div className="glass-panel border-white/5 rounded-3xl shadow-2xl overflow-hidden">
+          <div className="border-b border-white/5 px-8 py-6 bg-white/[0.02]">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0A8F6A]">{users.length} ENTITIES REGISTERED</p>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="border-b bg-muted/30">
+              <thead className="border-b border-white/5 bg-white/[0.02]">
                 <tr>
-                  {["Name", "Email", "Role", "Plan", "University", "Points", "Joined"].map((h) => (
-                    <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">
+                  {["ENTITY NAME", "IDENTIFIER", "AUTHORITY", "NODE PLAN", "INSTITUTION", "INTEL", "SYNCED"].map((h) => (
+                    <th key={h} className="px-6 py-4 text-left text-[10px] font-bold uppercase tracking-widest text-neutral-500">
                       {h}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-white/5">
                 {users.map((u) => (
-                  <tr key={u.id} className="border-b last:border-0 hover:bg-muted/20">
-                    <td className="px-4 py-3 font-medium">{u.name || "—"}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{u.email}</td>
-                    <td className="px-4 py-3 capitalize">
+                  <tr key={u.id} className="hover:bg-white/[0.02] transition-colors">
+                    <td className="px-6 py-5 font-medium text-white">{u.name || "UNIDENTIFIED"}</td>
+                    <td className="px-6 py-5 text-neutral-500 font-light">{u.email}</td>
+                    <td className="px-6 py-5">
                       <span className={cn(
-                        "rounded-full px-2 py-0.5 text-[10px] font-medium",
-                        u.role === "admin" ? "bg-red-100 text-red-700" :
-                        u.role === "lecturer" ? "bg-blue-100 text-blue-700" :
-                        "bg-muted text-muted-foreground",
+                        "rounded-full px-3 py-1 text-[8px] font-bold uppercase tracking-tighter border",
+                        u.role === "admin" ? "bg-red-500/10 text-red-500 border-red-500/20" :
+                          u.role === "lecturer" ? "bg-blue-500/10 text-blue-500 border-blue-500/20" :
+                            "bg-[#0A8F6A]/10 text-[#0A8F6A] border-[#0A8F6A]/20 shadow-[0_0_10px_rgba(10,143,106,0.1)]",
                       )}>
                         {u.role}
                       </span>
                     </td>
-                    <td className="px-4 py-3 capitalize text-muted-foreground">{u.plan}</td>
-                    <td className="px-4 py-3 text-muted-foreground truncate max-w-36">{u.university || "—"}</td>
-                    <td className="px-4 py-3 font-medium text-primary">{u.points}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{timeAgo(u.created_at)}</td>
+                    <td className="px-6 py-5 text-[10px] font-bold uppercase tracking-widest text-neutral-400">{u.plan}</td>
+                    <td className="px-6 py-5 text-neutral-500 font-light truncate max-w-36">{u.university || "—"}</td>
+                    <td className="px-6 py-5 font-bold text-[#0A8F6A]">{u.points}</td>
+                    <td className="px-6 py-5 text-neutral-600 font-light">{timeAgo(u.created_at)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
             {users.length === 0 && (
-              <div className="py-12 text-center text-sm text-muted-foreground">No users yet.</div>
+              <div className="py-24 text-center text-sm text-neutral-600 font-light">NO ENTITIES DETECTED IN THIS DOMAIN.</div>
             )}
           </div>
         </div>

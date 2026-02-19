@@ -23,15 +23,15 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const displayName = profile.name || user.user_metadata?.full_name || user.email?.split("@")[0] || "User";
 
   return (
-    <div className="flex h-screen overflow-hidden bg-muted/20">
+    <div className="flex h-screen overflow-hidden bg-transparent">
       <Sidebar role={profile.role} />
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-hidden bg-black/10 backdrop-blur-md border-l border-white/5">
         <Header
           userName={displayName}
           userEmail={user.email}
           userAvatar={profile.avatar}
         />
-        <main className="flex-1 overflow-y-auto p-4 md:p-6">{children}</main>
+        <main className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">{children}</main>
       </div>
     </div>
   );

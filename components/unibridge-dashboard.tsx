@@ -250,49 +250,49 @@ export function UniBridgeDashboard() {
   return (
     <div>
       <div className="mx-auto w-full max-w-7xl">
-        <section className="overflow-hidden rounded-3xl border border-white/80 bg-hero-gradient p-6 text-white shadow-xl md:p-10">
-          <div className="flex flex-wrap items-center justify-between gap-4">
+        <section className="overflow-hidden rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-6 text-white shadow-2xl md:p-10 relative">
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#0A8F6A]/10 to-transparent opacity-50 pointer-events-none"></div>
+          <div className="flex flex-wrap items-center justify-between gap-4 relative z-10">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-white/85">UniBridge Hackathon MVP</p>
-              <h1 className="mt-2 text-3xl font-semibold md:text-5xl">Virtual Campus For Nigerian Universities</h1>
-              <p className="mt-3 max-w-2xl text-sm text-white/90 md:text-base">
-                AI summaries, resource moderation, scholarship and gig matching, and wellness check-ins in one
-                low-data-ready platform.
+              <p className="text-xs uppercase tracking-[0.2em] text-[#0A8F6A] font-semibold">UniBridge Systems Terminal</p>
+              <h1 className="mt-2 text-3xl font-medium tracking-tighter md:text-5xl">Virtual Campus Intelligence</h1>
+              <p className="mt-3 max-w-2xl text-sm text-neutral-400 font-light md:text-base">
+                Autonomous summaries, resource deconstruction, and strategic opportunity matching in a unified academic interface.
               </p>
             </div>
-            <div className={`rounded-full border px-4 py-2 text-sm font-medium ${statusClass}`}>
+            <div className={`rounded-full border px-4 py-2 text-[11px] font-medium uppercase tracking-widest ${statusClass}`}>
               {statusLabel}
             </div>
           </div>
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 relative z-10">
             {MVP_STATS.map((stat) => (
-              <div key={stat.label} className="glass rounded-2xl p-4 text-slate-900">
-                <p className="text-xs uppercase tracking-wide text-slate-600">{stat.label}</p>
-                <p className="mt-1 text-2xl font-semibold">{stat.value}</p>
+              <div key={stat.label} className="glass-panel rounded-2xl p-6 hover:border-[#0A8F6A]/30 transition-all duration-300">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-500 font-medium">{stat.label}</p>
+                <p className="mt-2 text-3xl font-semibold tracking-tighter text-white">{stat.value}</p>
+                <div className="mt-3 h-0.5 w-8 bg-[#0A8F6A]/50"></div>
               </div>
             ))}
           </div>
         </section>
 
         <section className="mt-8 grid gap-6 lg:grid-cols-2">
-          <article className="rounded-2xl border bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-2 text-lg font-semibold">
-              <Brain className="h-5 w-5 text-primary" />
+          <article className="glass-panel rounded-2xl p-6 border-white/5 shadow-2xl">
+            <div className="flex items-center gap-3 text-lg font-medium tracking-tight text-white mb-6">
+              <Brain className="h-5 w-5 text-[#0A8F6A]" />
               AI Lecture Summarizer
             </div>
             <textarea
               value={summaryInput}
               onChange={(event) => setSummaryInput(event.target.value)}
-              className="mt-3 h-32 w-full rounded-xl border px-3 py-2 text-sm"
+              className="mt-3 h-32 w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-neutral-300 focus:border-[#0A8F6A]/50 focus:outline-none transition-colors"
             />
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-6 flex flex-wrap gap-2">
               {(["en", "yo", "pcm"] as SupportedLanguage[]).map((lang) => (
                 <button
                   key={lang}
                   onClick={() => setSummaryLanguage(lang)}
-                  className={`rounded-lg border px-3 py-2 text-xs font-medium uppercase ${
-                    summaryLanguage === lang ? "bg-primary text-white" : "bg-white"
-                  }`}
+                  className={`rounded-lg border px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all ${summaryLanguage === lang ? "bg-[#0A8F6A] text-white shadow-[0_0_15px_rgba(10,143,106,0.4)]" : "bg-white/5 border-white/10 text-neutral-500 hover:text-white hover:border-white/20"
+                    }`}
                 >
                   {lang}
                 </button>
@@ -300,19 +300,20 @@ export function UniBridgeDashboard() {
               <button
                 onClick={onSummarize}
                 disabled={summaryLoading}
-                className="ml-auto inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+                className="ml-auto inline-flex items-center gap-2 rounded-lg bg-white/5 border border-white/10 px-5 py-2 text-xs font-semibold uppercase tracking-widest text-white hover:bg-[#0A8F6A] hover:border-[#0A8F6A] transition-all disabled:opacity-60"
               >
                 {summaryLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
                 Generate
               </button>
             </div>
             {summaryResult && (
-              <div className="mt-4 rounded-xl bg-muted p-3 text-sm">
+              <div className="mt-6 rounded-xl bg-[#0A8F6A]/5 border border-[#0A8F6A]/20 p-4 text-xs font-light leading-relaxed text-neutral-300">
                 <p>{summaryResult.summary}</p>
-                <p className="mt-2 text-xs text-muted-foreground">
-                  Model: {summaryResult.metadata.summarizationModel}
-                  {summaryResult.metadata.usedFallback ? " (fallback used)" : ""}
-                </p>
+                <div className="mt-4 flex items-center gap-2 text-[10px] text-neutral-500 font-medium uppercase tracking-widest">
+                  <div className="w-4 h-px bg-[#0A8F6A]"></div>
+                  Logic Path: {summaryResult.metadata.summarizationModel}
+                  {summaryResult.metadata.usedFallback ? " (REDUCED MODE)" : ""}
+                </div>
               </div>
             )}
           </article>
@@ -337,11 +338,10 @@ export function UniBridgeDashboard() {
             </button>
             {moderationResult && (
               <div
-                className={`mt-4 rounded-xl border p-3 text-sm ${
-                  moderationResult.flagged
-                    ? "border-red-300 bg-red-50 text-red-800"
-                    : "border-emerald-300 bg-emerald-50 text-emerald-800"
-                }`}
+                className={`mt-4 rounded-xl border p-3 text-sm ${moderationResult.flagged
+                  ? "border-red-300 bg-red-50 text-red-800"
+                  : "border-emerald-300 bg-emerald-50 text-emerald-800"
+                  }`}
               >
                 <p className="font-medium">
                   Status: {moderationResult.flagged ? "Needs Manual Review" : "Auto-Approve Candidate"}
@@ -368,9 +368,8 @@ export function UniBridgeDashboard() {
                 <button
                   key={lang}
                   onClick={() => setTranslationLanguage(lang)}
-                  className={`rounded-lg border px-3 py-2 text-xs font-medium uppercase ${
-                    translationLanguage === lang ? "bg-primary text-white" : "bg-white"
-                  }`}
+                  className={`rounded-lg border px-3 py-2 text-xs font-medium uppercase ${translationLanguage === lang ? "bg-primary text-white" : "bg-white"
+                    }`}
                 >
                   {lang}
                 </button>
@@ -395,24 +394,23 @@ export function UniBridgeDashboard() {
             )}
           </article>
 
-          <article className="rounded-2xl border bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-2 text-lg font-semibold">
-              <HeartPulse className="h-5 w-5 text-primary" />
-              Mental Health Check-In
+          <article className="glass-panel rounded-2xl p-6 border-white/5 shadow-2xl">
+            <div className="flex items-center gap-3 text-lg font-medium tracking-tight text-white mb-6">
+              <HeartPulse className="h-5 w-5 text-[#0A8F6A]" />
+              Wellness Resonance
             </div>
             <textarea
               value={checkinInput}
               onChange={(event) => setCheckinInput(event.target.value)}
-              className="mt-3 h-28 w-full rounded-xl border px-3 py-2 text-sm"
+              className="mt-3 h-28 w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-neutral-300 focus:border-[#0A8F6A]/50 focus:outline-none transition-colors"
             />
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-6 flex flex-wrap gap-2">
               {["happy", "sad", "anxious", "stressed", "neutral"].map((mood) => (
                 <button
                   key={mood}
                   onClick={() => setCheckinMood(mood)}
-                  className={`rounded-lg border px-3 py-2 text-xs font-medium capitalize ${
-                    checkinMood === mood ? "bg-primary text-white" : "bg-white"
-                  }`}
+                  className={`rounded-lg border px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all ${checkinMood === mood ? "bg-[#0A8F6A] text-white shadow-[0_0_15px_rgba(10,143,106,0.4)]" : "bg-white/5 border-white/10 text-neutral-500 hover:text-white hover:border-white/20"
+                    }`}
                 >
                   {mood}
                 </button>
@@ -421,27 +419,29 @@ export function UniBridgeDashboard() {
             <button
               onClick={onCheckin}
               disabled={checkinLoading}
-              className="mt-3 inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+              className="mt-6 inline-flex items-center gap-3 rounded-lg bg-white/5 border border-white/10 px-5 py-2 text-xs font-semibold uppercase tracking-widest text-white hover:bg-[#0A8F6A] hover:border-[#0A8F6A] transition-all disabled:opacity-60"
             >
               {checkinLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <HeartPulse className="h-4 w-4" />}
-              Check In
+              Transmit Check-In
             </button>
             {checkinResult && (
               <div
-                className={`mt-4 rounded-xl border p-3 text-sm ${
-                  checkinResult.urgent ? "border-red-300 bg-red-50 text-red-900" : "border-blue-300 bg-blue-50"
-                }`}
+                className={`mt-6 rounded-xl border p-4 text-xs font-light ${checkinResult.urgent ? "border-red-500/30 bg-red-500/5 text-red-200" : "border-blue-500/30 bg-blue-500/5 text-blue-200"
+                  }`}
               >
                 {checkinResult.urgent && (
-                  <div className="mb-2 inline-flex items-center gap-1 text-xs font-semibold uppercase">
-                    <CircleAlert className="h-4 w-4" />
-                    Urgent Support
+                  <div className="mb-4 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">
+                    <CircleAlert className="h-4 w-4 shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
+                    Priority Protocol Triggered
                   </div>
                 )}
-                <p>{checkinResult.response}</p>
-                <ul className="mt-2 space-y-1 text-xs">
+                <p className="leading-relaxed">{checkinResult.response}</p>
+                <ul className="mt-4 space-y-2 pt-4 border-t border-white/5">
                   {checkinResult.followUps.map((item) => (
-                    <li key={item}>- {item}</li>
+                    <li key={item} className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#0A8F6A]"></div>
+                        {item}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -450,100 +450,107 @@ export function UniBridgeDashboard() {
         </section>
 
         <section className="mt-8 grid gap-6 lg:grid-cols-2">
-          <article className="rounded-2xl border bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-2 text-lg font-semibold">
-              <Sparkles className="h-5 w-5 text-primary" />
-              Scholarship + Gig Matching
+          <article className="glass-panel rounded-2xl p-6 border-white/5 shadow-2xl">
+            <div className="flex items-center gap-3 text-lg font-medium tracking-tight text-white mb-2">
+              <Sparkles className="h-5 w-5 text-[#0A8F6A]" />
+              Strategic Intel Matching
             </div>
-            <p className="mt-1 text-sm text-muted-foreground">
-              AI ranks opportunities using profile context + embedding similarity.
+            <p className="text-[10px] text-neutral-500 font-medium uppercase tracking-[0.2em] mb-6">
+              AI-driven arbitrage of scholarships & growth protocols.
             </p>
-            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-2">
               <input
                 value={skills}
                 onChange={(event) => setSkills(event.target.value)}
-                className="rounded-lg border px-3 py-2 text-sm"
-                placeholder="skills (comma separated)"
+                className="rounded-lg border border-white/10 bg-black/20 px-4 py-2.5 text-xs text-neutral-300 focus:border-[#0A8F6A]/50 focus:outline-none transition-colors"
+                placeholder="SKILLS (CSV)"
               />
               <input
                 value={interests}
                 onChange={(event) => setInterests(event.target.value)}
-                className="rounded-lg border px-3 py-2 text-sm"
-                placeholder="interests (comma separated)"
+                className="rounded-lg border border-white/10 bg-black/20 px-4 py-2.5 text-xs text-neutral-300 focus:border-[#0A8F6A]/50 focus:outline-none transition-colors"
+                placeholder="INTERESTS (CSV)"
               />
               <input
                 value={location}
                 onChange={(event) => setLocation(event.target.value)}
-                className="rounded-lg border px-3 py-2 text-sm"
-                placeholder="location"
+                className="rounded-lg border border-white/10 bg-black/20 px-4 py-2.5 text-xs text-neutral-300 focus:border-[#0A8F6A]/50 focus:outline-none transition-colors"
+                placeholder="LOCATION"
               />
               <input
                 value={gpa}
                 onChange={(event) => setGpa(event.target.value)}
-                className="rounded-lg border px-3 py-2 text-sm"
-                placeholder="CGPA"
+                className="rounded-lg border border-white/10 bg-black/20 px-4 py-2.5 text-xs text-neutral-300 focus:border-[#0A8F6A]/50 focus:outline-none transition-colors"
+                placeholder="CGPA INDICATOR"
               />
             </div>
             <button
               onClick={onMatch}
               disabled={matchLoading}
-              className="mt-3 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+              className="mt-6 inline-flex items-center gap-3 rounded-lg bg-white/5 border border-white/10 px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-white hover:bg-[#0A8F6A] hover:border-[#0A8F6A] transition-all disabled:opacity-60"
             >
               {matchLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-              Rank Opportunities
+              Initialize Match Logic
             </button>
-            <div className="mt-4 space-y-3">
+            <div className="mt-6 space-y-4">
               {(matchResult?.matches ?? []).map((item) => (
-                <div key={item.opportunity.id} className="rounded-xl border p-3">
+                <div key={item.opportunity.id} className="rounded-xl border border-white/5 bg-white/[0.02] p-4 group hover:border-[#0A8F6A]/30 transition-all duration-300">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="font-medium">{item.opportunity.title}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {item.opportunity.organization} | {item.opportunity.location}
-                        {item.opportunity.isRemote ? " | Remote" : ""}
+                      <p className="font-medium text-neutral-200 group-hover:text-white transition-colors">{item.opportunity.title}</p>
+                      <p className="text-[10px] text-neutral-500 font-medium uppercase tracking-wider mt-1">
+                        {item.opportunity.organization} • {item.opportunity.location}
+                        {item.opportunity.isRemote ? " • Remote Access" : ""}
                       </p>
                     </div>
-                    <span className="rounded-full bg-accent px-2 py-1 text-xs font-semibold">
-                      {(item.score * 100).toFixed(0)}%
+                    <span className="rounded-full bg-[#0A8F6A]/10 border border-[#0A8F6A]/20 px-3 py-1 text-[10px] font-bold text-[#0A8F6A] shadow-[0_0_10px_rgba(10,143,106,0.1)]">
+                      {(item.score * 100).toFixed(0)}% MATCH
                     </span>
                   </div>
-                  <p className="mt-2 text-xs text-muted-foreground">{item.reason}</p>
+                  <p className="mt-3 text-xs text-neutral-400 font-light leading-relaxed">{item.reason}</p>
                   {item.opportunity.amount ? (
-                    <p className="mt-1 text-xs font-medium">{formatNaira(item.opportunity.amount)}</p>
+                    <div className="mt-4 flex items-center gap-3">
+                      <div className="h-px w-4 bg-[#0A8F6A]"></div>
+                      <p className="text-xs font-semibold text-white tracking-tight">{formatNaira(item.opportunity.amount)}</p>
+                    </div>
                   ) : null}
                 </div>
               ))}
             </div>
           </article>
 
-          <article className="rounded-2xl border bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-2 text-lg font-semibold">
-              <BadgeCheck className="h-5 w-5 text-primary" />
-              Pricing Plans
+          <article className="glass-panel rounded-2xl p-6 border-white/5 shadow-2xl">
+            <div className="flex items-center gap-3 text-lg font-medium tracking-tight text-white mb-6">
+              <BadgeCheck className="h-5 w-5 text-[#0A8F6A]" />
+              Authorized Protocols
             </div>
-            <div className="mt-3 space-y-3">
+            <div className="mt-3 space-y-4">
               {Object.entries(PLAN_PRICING).map(([plan, info]) => (
-                <div key={plan} className="rounded-xl border p-3">
-                  <p className="text-sm font-semibold capitalize">{plan}</p>
-                  <p className="text-xs text-muted-foreground">{info.price}</p>
-                  <ul className="mt-2 space-y-1 text-xs">
+                <div key={plan} className="rounded-xl border border-white/5 bg-white/[0.02] p-4 hover:border-white/10 transition-colors">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-white">{plan}</p>
+                    <p className="text-[11px] text-[#0A8F6A] font-semibold">{info.price}</p>
+                  </div>
+                  <ul className="mt-3 space-y-2">
                     {info.highlights.map((feature) => (
-                      <li key={feature}>- {feature}</li>
+                      <li key={feature} className="text-[11px] text-neutral-500 flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-white/20"></div>
+                        {feature}
+                      </li>
                     ))}
                   </ul>
                 </div>
               ))}
             </div>
-            <div className="mt-4 rounded-xl border border-dashed p-3 text-xs text-muted-foreground">
-              <p className="font-medium text-foreground">Low-data mode + resilience notes</p>
-              <p className="mt-1">
-                Add `next-pwa`, IndexedDB caching, and queued sync to complete offline-first behavior before final
-                production rollout.
+            <div className="mt-8 rounded-xl border border-dashed border-white/10 bg-white/[0.01] p-5 text-center">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 mb-2">Edge Computing Protocol</p>
+              <p className="text-[11px] text-neutral-600 font-light leading-relaxed">
+                Localized PWA deployment and IndexedDB synchronization pending final version rollout.
               </p>
             </div>
-            <div className="mt-3 inline-flex items-center gap-2 rounded-lg bg-muted px-3 py-2 text-xs">
+            <div className="mt-6 flex items-center justify-center gap-3 text-[10px] font-medium uppercase tracking-widest text-neutral-500 bg-white/5 py-3 rounded-lg border border-white/5">
               <WifiOff className="h-3.5 w-3.5" />
-              Works in fallback mode if AI APIs are unavailable
+              Resilient Mode Active: Fallback logic operational
             </div>
           </article>
         </section>

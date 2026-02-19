@@ -157,68 +157,68 @@ export default function OpportunitiesPage() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-xl font-bold">Opportunities</h1>
-          <p className="mt-0.5 text-sm text-muted-foreground">
-            Scholarships, bursaries, internships & gigs matched to your profile.
+          <h1 className="text-2xl font-semibold tracking-tight text-white">Strategic Opportunities</h1>
+          <p className="mt-1 text-sm text-neutral-400 font-light">
+            Scholarships, bursaries, internships & gigs matched to your intelligence profile.
           </p>
         </div>
         <button
           onClick={() => setShowMatchPanel(true)}
-          className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+          className="inline-flex items-center gap-2 rounded-lg bg-[#0A8F6A] px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-white hover:opacity-90 shadow-lg shadow-emerald-500/20 transition-all"
         >
-          <Sparkles className="h-4 w-4" /> AI Match Me
+          <Sparkles className="h-4 w-4" /> Initialize AI Match
         </button>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3">
-        <div className="flex items-center gap-2 rounded-xl border bg-white px-3 py-2">
-          <Search className="h-4 w-4 text-muted-foreground" />
+      <div className="flex flex-wrap gap-4">
+        <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-black/20 px-4 py-2.5 focus-within:border-[#0A8F6A]/50 transition-colors">
+          <Search className="h-4 w-4 text-neutral-500" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search opportunities…"
-            className="w-44 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+            placeholder="Search intel..."
+            className="w-44 bg-transparent text-sm outline-none text-neutral-200 placeholder:text-neutral-500"
           />
-          {search && <button onClick={() => setSearch("")}><X className="h-3.5 w-3.5 text-muted-foreground" /></button>}
+          {search && <button onClick={() => setSearch("")}><X className="h-3.5 w-3.5 text-neutral-500 hover:text-white" /></button>}
         </div>
 
-        <div className="flex items-center gap-2 rounded-xl border bg-white px-3 py-2">
-          <Filter className="h-4 w-4 text-muted-foreground" />
+        <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-black/20 px-4 py-2.5 focus-within:border-[#0A8F6A]/50 transition-colors">
+          <Filter className="h-4 w-4 text-neutral-500" />
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            className="bg-transparent text-sm outline-none text-muted-foreground"
+            className="bg-transparent text-sm outline-none text-neutral-400 cursor-pointer"
           >
-            <option value="">All types</option>
-            {OPP_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+            <option value="" className="bg-neutral-900">All Protocol Types</option>
+            {OPP_TYPES.map((t) => <option key={t} value={t} className="bg-neutral-900">{t.toUpperCase()}</option>)}
           </select>
         </div>
 
         <button
           onClick={() => setRemoteOnly(!remoteOnly)}
           className={cn(
-            "flex items-center gap-2 rounded-xl border px-3 py-2 text-sm font-medium transition-colors",
-            remoteOnly ? "border-primary bg-accent text-accent-foreground" : "bg-white text-muted-foreground hover:text-foreground",
+            "flex items-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-bold uppercase tracking-widest transition-all",
+            remoteOnly ? "border-[#0A8F6A] bg-[#0A8F6A] text-white shadow-[0_0_15px_rgba(10,143,106,0.3)]" : "bg-black/20 border-white/10 text-neutral-500 hover:text-white hover:border-white/20",
           )}
         >
-          <Wifi className="h-4 w-4" /> Remote only
+          <Wifi className="h-4 w-4" /> Remote Access
         </button>
 
         {matchMode && (
           <button
             onClick={() => void loadOpportunities()}
-            className="rounded-xl border px-3 py-2 text-sm text-muted-foreground hover:bg-muted"
+            className="rounded-xl border border-white/10 px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-neutral-500 hover:text-white hover:bg-white/5 transition-all"
           >
-            Clear AI ranking
+            Reset Ranking
           </button>
         )}
       </div>
 
       {matchMode && (
-        <div className="flex items-center gap-2 rounded-xl border border-primary/30 bg-accent px-4 py-2 text-sm text-accent-foreground">
-          <Sparkles className="h-4 w-4" />
-          Results ranked by AI match score based on your profile.
+        <div className="flex items-center gap-2 rounded-xl border border-[#0A8F6A]/30 bg-[#0A8F6A]/5 px-4 py-3 text-sm text-[#0A8F6A] font-light">
+          <Sparkles className="h-4 w-4 shadow-[0_0_10px_rgba(10,143,106,0.3)]" />
+          Protocols ranked by AI neural matching based on your intelligence profile.
         </div>
       )}
 
@@ -233,52 +233,54 @@ export default function OpportunitiesPage() {
           <p className="mt-3 text-sm font-medium text-muted-foreground">No opportunities found</p>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {opportunities.map((opp) => {
             const days = daysUntilDeadline(opp.deadline);
             return (
-              <div key={opp.id} className="flex flex-col rounded-2xl border bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
+              <div key={opp.id} className="glass-panel flex flex-col rounded-2xl p-6 shadow-2xl group hover:border-[#0A8F6A]/30 transition-all duration-500">
                 <div className="flex items-start justify-between gap-2">
-                  <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-medium", getOpportunityTypeColor(opp.type))}>
+                  <span className={cn("rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest border", getOpportunityTypeColor(opp.type))}>
                     {opp.type}
                   </span>
                   {opp.matchScore !== undefined && (
-                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
-                      {(opp.matchScore * 100).toFixed(0)}% match
+                    <span className="rounded-full bg-[#0A8F6A] px-3 py-1 text-[10px] font-bold text-white shadow-[0_0_15px_rgba(10,143,106,0.4)] uppercase tracking-widest">
+                      {(opp.matchScore * 100).toFixed(0)}% Match
                     </span>
                   )}
                 </div>
 
-                <div className="mt-3 flex-1">
-                  <p className="text-sm font-semibold leading-snug">{opp.title}</p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">{opp.organization}</p>
+                <div className="mt-6 flex-1">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#0A8F6A] font-semibold mb-2">{opp.organization}</p>
+                  <p className="text-lg font-medium leading-tight text-white group-hover:text-[#0A8F6A] transition-colors duration-300">{opp.title}</p>
                   {opp.description && (
-                    <p className="mt-2 line-clamp-2 text-xs text-muted-foreground">{opp.description}</p>
+                    <p className="mt-4 line-clamp-2 text-xs text-neutral-500 font-light leading-relaxed">{opp.description}</p>
                   )}
                   {opp.matchReason && (
-                    <p className="mt-2 text-xs text-primary/80 italic">{opp.matchReason}</p>
+                    <div className="mt-4 rounded-lg bg-[#0A8F6A]/5 border border-[#0A8F6A]/10 p-3 italic text-[11px] text-neutral-400 font-light">
+                      <span className="text-[#0A8F6A] font-bold not-italic">AI Logic:</span> {opp.matchReason}
+                    </div>
                   )}
                 </div>
 
                 {opp.amount && (
-                  <p className="mt-3 text-base font-bold text-primary">{formatNaira(opp.amount)}</p>
+                  <p className="mt-6 text-xl font-bold text-white tracking-tight">{formatNaira(opp.amount)}</p>
                 )}
 
-                <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
-                  <span className="flex items-center gap-1">
-                    <MapPin className="h-3 w-3" /> {opp.location}
-                    {opp.is_remote && " · Remote"}
+                <div className="mt-6 flex flex-wrap gap-4 text-[10px] font-bold uppercase tracking-widest text-neutral-500 pt-6 border-t border-white/5">
+                  <span className="flex items-center gap-1.5">
+                    <MapPin className="h-3.5 w-3.5 text-[#0A8F6A]" /> {opp.location}
+                    {opp.is_remote && " · Remote Access"}
                   </span>
-                  <span className={cn("flex items-center gap-1", days <= 7 && "text-destructive font-medium")}>
-                    <Clock className="h-3 w-3" />
-                    {days > 0 ? `${days}d left` : "Deadline passed"}
+                  <span className={cn("flex items-center gap-1.5", days <= 7 && "text-red-500")}>
+                    <Clock className="h-3.5 w-3.5 text-[#0A8F6A]" />
+                    {days > 0 ? `${days}D REMAINING` : "PROTOCOL EXPIRED"}
                   </span>
                 </div>
 
                 {opp.skills.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-1">
+                  <div className="mt-4 flex flex-wrap gap-1.5">
                     {opp.skills.slice(0, 4).map((skill) => (
-                      <span key={skill} className="rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">
+                      <span key={skill} className="rounded-md bg-white/5 border border-white/5 px-2 py-0.5 text-[9px] text-neutral-500 font-medium tracking-wider uppercase">
                         {skill}
                       </span>
                     ))}
@@ -289,9 +291,9 @@ export default function OpportunitiesPage() {
                   href={opp.application_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-xl bg-primary py-2 text-xs font-semibold text-white hover:opacity-90"
+                  className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-[#0A8F6A] py-3 text-xs font-bold uppercase tracking-widest text-white hover:opacity-90 transition-all shadow-lg shadow-emerald-500/20"
                 >
-                  Apply Now <ArrowUpRight className="h-3.5 w-3.5" />
+                  Initiate Application <ArrowUpRight className="h-4 w-4" />
                 </a>
               </div>
             );
@@ -301,54 +303,55 @@ export default function OpportunitiesPage() {
 
       {/* AI Match panel */}
       {showMatchPanel && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary" />
-                <h2 className="text-lg font-semibold">AI Opportunity Matching</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xl p-4">
+          <div className="w-full max-w-md rounded-3xl border border-white/10 bg-black/80 p-8 shadow-2xl relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#0A8F6A]/5 to-transparent pointer-events-none"></div>
+            <div className="flex items-center justify-between relative z-10 mb-6">
+              <div className="flex items-center gap-3">
+                <Sparkles className="h-6 w-6 text-[#0A8F6A]" />
+                <h2 className="text-xl font-medium tracking-tight text-white">Neural Match Sync</h2>
               </div>
-              <button onClick={() => setShowMatchPanel(false)} className="rounded-lg p-1 hover:bg-muted">
+              <button onClick={() => setShowMatchPanel(false)} className="rounded-full p-2 bg-white/5 border border-white/5 text-neutral-500 hover:text-white transition-all">
                 <X className="h-4 w-4" />
               </button>
             </div>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Tell us about yourself and we'll rank opportunities by fit using AI embeddings.
+            <p className="text-xs text-neutral-400 font-light leading-relaxed mb-8 relative z-10">
+              Synchronize your academic profile with global opportunity databases using AI vector embeddings.
             </p>
 
-            <div className="mt-5 space-y-4">
+            <div className="space-y-5 relative z-10">
               {[
-                { label: "Skills (comma-separated)", key: "skills", placeholder: "react, python, research writing" },
-                { label: "Interests (comma-separated)", key: "interests", placeholder: "scholarship, internship, tutoring" },
-                { label: "Location", key: "location", placeholder: "Lagos" },
-                { label: "CGPA", key: "gpa", placeholder: "3.8" },
+                { label: "SKILLS (CSV)", key: "skills", placeholder: "react, python, research writing" },
+                { label: "INTERESTS (CSV)", key: "interests", placeholder: "scholarship, internship, tutoring" },
+                { label: "LOCATION", key: "location", placeholder: "Lagos" },
+                { label: "CGPA INDICATOR", key: "gpa", placeholder: "3.8" },
               ].map(({ label, key, placeholder }) => (
                 <div key={key}>
-                  <label className="mb-1.5 block text-sm font-medium">{label}</label>
+                  <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">{label}</label>
                   <input
                     value={profile[key as keyof typeof profile]}
                     onChange={(e) => setProfile((p) => ({ ...p, [key]: e.target.value }))}
                     placeholder={placeholder}
-                    className="w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none ring-primary/50 focus:ring-2"
+                    className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-neutral-200 outline-none focus:border-[#0A8F6A]/50 transition-colors"
                   />
                 </div>
               ))}
             </div>
 
-            <div className="mt-5 flex gap-3">
+            <div className="mt-8 flex gap-3 relative z-10">
               <button
                 onClick={() => setShowMatchPanel(false)}
-                className="flex-1 rounded-xl border py-2.5 text-sm font-medium hover:bg-muted"
+                className="flex-1 rounded-xl border border-white/10 bg-white/5 py-3 text-xs font-bold uppercase tracking-widest text-neutral-400 hover:text-white transition-all"
               >
                 Cancel
               </button>
               <button
                 onClick={() => void handleAiMatch()}
                 disabled={matchLoading}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-white disabled:opacity-60"
+                className="flex-[2] items-center justify-center gap-3 rounded-xl bg-[#0A8F6A] py-3 text-xs font-bold uppercase tracking-widest text-white shadow-lg shadow-emerald-500/20 transition-all disabled:opacity-60 flex"
               >
                 {matchLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-                {matchLoading ? "Ranking…" : "Rank Opportunities"}
+                {matchLoading ? "Synchronizing..." : "Initialize Rank"}
               </button>
             </div>
           </div>

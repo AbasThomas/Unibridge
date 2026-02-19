@@ -106,22 +106,25 @@ export default function ProfilePage() {
   return (
     <div className="mx-auto max-w-3xl space-y-6 animate-fade-in">
       {/* Profile card */}
-      <div className="rounded-2xl border bg-white shadow-sm overflow-hidden">
-        <div className="h-24 bg-hero-gradient" />
-        <div className="px-6 pb-6">
-          <div className="flex items-end justify-between">
-            <div className="-mt-10 flex items-end gap-4">
-              <div className="relative">
-                <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-4 border-white bg-primary text-2xl font-bold text-white shadow-md">
-                  {profile ? getInitials(profile.name || profile.email) : <User className="h-8 w-8" />}
+      <div className="glass-panel rounded-3xl overflow-hidden shadow-2xl relative">
+        <div className="h-32 bg-hero-gradient relative overflow-hidden">
+          <div className="absolute inset-0 bg-black/20"></div>
+          <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-[#0A8F6A]/20 rounded-full blur-3xl"></div>
+        </div>
+        <div className="px-8 pb-8 relative z-10">
+          <div className="flex flex-col sm:flex-row items-end justify-between gap-6">
+            <div className="-mt-12 flex items-end gap-6">
+              <div className="relative group">
+                <div className="flex h-28 w-28 items-center justify-center rounded-3xl border-4 border-black/40 bg-[#0A8F6A] text-4xl font-bold text-white shadow-2xl shadow-emerald-500/20 transition-transform duration-500 group-hover:scale-105">
+                  {profile ? getInitials(profile.name || profile.email) : <User className="h-12 w-12" />}
                 </div>
-                <button className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow border">
-                  <Camera className="h-3 w-3 text-muted-foreground" />
+                <button className="absolute -bottom-2 -right-2 flex h-8 w-8 items-center justify-center rounded-xl bg-black/60 border border-white/10 text-white shadow-xl hover:bg-[#0A8F6A] transition-all">
+                  <Camera className="h-4 w-4" />
                 </button>
               </div>
-              <div className="mb-1">
-                <p className="text-lg font-bold">{profile?.name || "Student"}</p>
-                <p className="text-sm text-muted-foreground">{profile?.email}</p>
+              <div className="mb-2">
+                <p className="text-2xl font-medium tracking-tight text-white mb-0.5">{profile?.name || "Neural Entity"}</p>
+                <p className="text-sm text-neutral-500 font-light">{profile?.email}</p>
               </div>
             </div>
 
@@ -129,10 +132,10 @@ export default function ProfilePage() {
               onClick={() => editing ? void handleSave() : setEditing(true)}
               disabled={saving}
               className={cn(
-                "mb-1 flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-colors",
+                "mb-2 flex items-center gap-2 rounded-xl px-6 py-3 text-xs font-bold uppercase tracking-widest transition-all",
                 editing
-                  ? "bg-primary text-white hover:opacity-90"
-                  : "border hover:bg-muted",
+                  ? "bg-[#0A8F6A] text-white shadow-lg shadow-emerald-500/20"
+                  : "bg-white/5 border border-white/10 text-neutral-400 hover:text-white hover:border-white/20",
               )}
             >
               {saving ? (
@@ -142,19 +145,19 @@ export default function ProfilePage() {
               ) : (
                 <Edit3 className="h-4 w-4" />
               )}
-              {saving ? "Saving…" : editing ? "Save changes" : "Edit profile"}
+              {saving ? "Syncing..." : editing ? "Authorize Changes" : "Modify Protocol"}
             </button>
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-2">
-            <span className="rounded-full border px-3 py-1 text-xs capitalize text-muted-foreground">
-              {profile?.role ?? "student"}
+          <div className="mt-8 flex flex-wrap gap-3">
+            <span className="rounded-full bg-white/5 border border-white/5 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-neutral-500">
+              {profile?.role ?? "standard-entity"}
             </span>
-            <span className="rounded-full border border-primary/30 bg-accent px-3 py-1 text-xs capitalize text-accent-foreground">
-              {profile?.plan ?? "basic"} plan
+            <span className="rounded-full bg-[#0A8F6A]/10 border border-[#0A8F6A]/20 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#0A8F6A] shadow-[0_0_15px_rgba(10,143,106,0.1)]">
+              {profile?.plan ?? "basic"} node
             </span>
             {profile?.university && (
-              <span className="rounded-full border px-3 py-1 text-xs text-muted-foreground">
+              <span className="rounded-full bg-white/5 border border-white/5 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-neutral-500">
                 {profile.university}
               </span>
             )}
@@ -163,29 +166,29 @@ export default function ProfilePage() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Edit form */}
-        <div className="lg:col-span-2 space-y-4 rounded-2xl border bg-white p-5 shadow-sm">
-          <h2 className="font-semibold">Personal Information</h2>
+        {/* Personal info form */}
+        <div className="lg:col-span-2 space-y-8 rounded-3xl border border-white/5 bg-black/40 p-8 shadow-2xl backdrop-blur-md">
+          <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0A8F6A]">Intelductory Matrix</h2>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-6 sm:grid-cols-2">
             {[
-              { label: "Full Name", key: "name", placeholder: "Tunde Adesanya" },
-              { label: "University", key: "university", placeholder: "University of Lagos" },
-              { label: "Department", key: "department", placeholder: "Computer Science" },
-              { label: "Matric Number", key: "matric_number", placeholder: "190404001" },
+              { label: "FULL DESIGNATION", key: "name", placeholder: "Tunde Adesanya" },
+              { label: "INSTITUTION", key: "university", placeholder: "University of Lagos" },
+              { label: "CORE DISCIPLINE", key: "department", placeholder: "Computer Science" },
+              { label: "PROTOCOL IDENTIFIER", key: "matric_number", placeholder: "190404001" },
             ].map(({ label, key, placeholder }) => (
               <div key={key}>
-                <label className="mb-1.5 block text-sm font-medium">{label}</label>
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-widest text-neutral-500">{label}</label>
                 <input
                   value={form[key as keyof typeof form]}
                   onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
                   placeholder={placeholder}
                   disabled={!editing}
                   className={cn(
-                    "w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none transition-colors",
+                    "w-full rounded-xl border px-4 py-3 text-sm outline-none transition-all duration-300",
                     editing
-                      ? "bg-white ring-primary/50 focus:ring-2"
-                      : "bg-muted/30 text-muted-foreground cursor-default",
+                      ? "bg-black/20 border-white/10 text-white focus:border-[#0A8F6A]/50"
+                      : "bg-white/5 border-transparent text-neutral-500 cursor-default",
                   )}
                 />
               </div>
@@ -193,81 +196,83 @@ export default function ProfilePage() {
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-medium">Bio</label>
+            <label className="mb-2 block text-[10px] font-bold uppercase tracking-widest text-neutral-500">ENTITY BIO</label>
             <textarea
               value={form.bio}
               onChange={(e) => setForm((f) => ({ ...f, bio: e.target.value }))}
-              placeholder="Tell us a bit about yourself…"
+              placeholder="Define your tactical objectives..."
               disabled={!editing}
-              rows={3}
+              rows={4}
               className={cn(
-                "w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none transition-colors",
+                "w-full rounded-xl border px-4 py-3 text-sm outline-none transition-all duration-300 resize-none",
                 editing
-                  ? "bg-white ring-primary/50 focus:ring-2"
-                  : "bg-muted/30 text-muted-foreground cursor-default",
+                  ? "bg-black/20 border-white/10 text-white focus:border-[#0A8F6A]/50"
+                  : "bg-white/5 border-transparent text-neutral-500 cursor-default",
               )}
             />
           </div>
 
           {editing && (
-            <div className="flex gap-3">
+            <div className="flex gap-4 pt-4">
               <button
                 onClick={() => setEditing(false)}
-                className="rounded-xl border px-4 py-2 text-sm font-medium hover:bg-muted"
+                className="flex-1 rounded-xl border border-white/10 bg-white/5 py-3 text-xs font-bold uppercase tracking-widest text-neutral-400 hover:text-white transition-all"
               >
-                Cancel
+                Abort
               </button>
               <button
                 onClick={() => void handleSave()}
                 disabled={saving}
-                className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+                className="flex-[2] flex items-center justify-center gap-3 rounded-xl bg-[#0A8F6A] py-3 text-xs font-bold uppercase tracking-widest text-white shadow-lg shadow-emerald-500/20 disabled:opacity-60"
               >
                 {saving && <Loader2 className="h-4 w-4 animate-spin" />}
-                Save changes
+                Authorize Changes
               </button>
             </div>
           )}
         </div>
 
         {/* Points & Plan */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           {/* Points */}
-          <div className="rounded-2xl border bg-white p-5 shadow-sm">
-            <p className="text-sm font-semibold">Points & Gamification</p>
-            <div className="mt-3 flex items-center justify-between">
+          <div className="glass-panel border-white/5 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0A8F6A]/5 to-transparent pointer-events-none"></div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0A8F6A] mb-4">Neural Recognition</p>
+            <div className="flex items-center justify-between mb-6">
               <div>
-                <p className="text-3xl font-bold text-primary">{profile?.points ?? 0}</p>
-                <p className="text-xs text-muted-foreground">Total points earned</p>
+                <p className="text-4xl font-bold text-white tracking-tighter">{profile?.points ?? 0}</p>
+                <p className="text-[10px] text-neutral-500 font-bold uppercase tracking-widest mt-1">Total Intel Accumulated</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                <Award className="h-6 w-6 text-primary" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0A8F6A]/10 border border-[#0A8F6A]/20 shadow-[0_0_20px_rgba(10,143,106,0.2)]">
+                <Award className="h-7 w-7 text-[#0A8F6A]" />
               </div>
             </div>
-            <div className="mt-3 h-1.5 w-full rounded-full bg-muted">
+            <div className="h-2 w-full rounded-full bg-white/5 border border-white/5 overflow-hidden">
               <div
-                className="h-full rounded-full bg-primary transition-all"
+                className="h-full rounded-full bg-[#0A8F6A] shadow-[0_0_15px_rgba(10,143,106,0.6)] transition-all duration-1000"
                 style={{ width: `${Math.min(100, ((profile?.points ?? 0) / 1000) * 100)}%` }}
               />
             </div>
-            <p className="mt-1 text-xs text-muted-foreground">
-              {Math.max(0, 1000 - (profile?.points ?? 0))} points until next level
+            <p className="mt-3 text-[10px] text-neutral-500 font-light flex justify-between">
+              <span>Next Level Threshold: 1,000</span>
+              <span className="font-bold text-[#0A8F6A]">{Math.max(0, 1000 - (profile?.points ?? 0))} TO SYNC</span>
             </p>
           </div>
 
           {/* Plan */}
-          <div className="rounded-2xl border bg-white p-5 shadow-sm">
-            <p className="text-sm font-semibold">Current Plan</p>
-            <p className="mt-1 text-xl font-bold capitalize text-primary">{profile?.plan ?? "basic"}</p>
-            <p className="text-xs text-muted-foreground">{planInfo?.price}</p>
-            <ul className="mt-3 space-y-1.5">
+          <div className="glass-panel border-white/5 rounded-2xl p-6 shadow-2xl relative">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-orange-500 mb-4">Access Protocol</p>
+            <p className="text-2xl font-medium tracking-tight text-white capitalize mb-1">{profile?.plan ?? "basic"} Node</p>
+            <p className="text-xs text-neutral-500 font-light mb-6">{planInfo?.price}</p>
+            <ul className="space-y-3 mb-8">
               {(planInfo?.highlights ?? []).map((f) => (
-                <li key={f} className="flex items-start gap-1.5 text-xs text-muted-foreground">
-                  <span className="mt-0.5 text-primary">✓</span> {f}
+                <li key={f} className="flex items-start gap-3 text-xs text-neutral-400 font-light">
+                  <span className="mt-0.5 text-[#0A8F6A] font-bold">»</span> {f}
                 </li>
               ))}
             </ul>
             {profile?.plan !== "premium" && (
-              <button className="mt-4 w-full rounded-xl bg-secondary py-2 text-sm font-semibold text-white hover:opacity-90">
+              <button className="w-full rounded-xl bg-[#0A8F6A] py-3 text-xs font-bold uppercase tracking-widest text-white shadow-lg shadow-emerald-500/20 hover:opacity-90 transition-all">
                 Upgrade to Premium
               </button>
             )}
@@ -276,28 +281,25 @@ export default function ProfilePage() {
       </div>
 
       {/* Badges */}
-      <div className="rounded-2xl border bg-white p-5 shadow-sm">
-        <h2 className="font-semibold">Badges</h2>
-        <p className="mt-0.5 text-xs text-muted-foreground">
-          Earn badges by using UniBridge — uploading resources, applying to opportunities, and more.
+      <div className="glass-panel border-white/5 rounded-3xl p-8 shadow-2xl relative">
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0A8F6A] mb-2">Merit Credentials</h2>
+        <p className="text-sm text-neutral-500 font-light mb-8">
+          Unlock tactical credentials by executing core UniBridge protocols.
         </p>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {BADGES.map(({ id, name, icon, desc, color }) => (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {BADGES.map(({ id, name, icon, desc }) => (
             <div
               key={id}
-              className="flex flex-col items-center rounded-xl border p-4 text-center opacity-40"
+              className="flex flex-col items-center rounded-2xl border border-white/5 bg-white/[0.02] p-6 text-center group transition-all duration-300 hover:bg-[#0A8F6A]/5 hover:border-[#0A8F6A]/20"
             >
-              <div className={cn("flex h-12 w-12 items-center justify-center rounded-xl text-2xl", color)}>
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/5 text-3xl shadow-xl grayscale group-hover:grayscale-0 transition-all duration-500">
                 {icon}
               </div>
-              <p className="mt-2 text-xs font-semibold">{name}</p>
-              <p className="mt-0.5 text-[10px] text-muted-foreground">{desc}</p>
+              <p className="mt-4 text-xs font-bold uppercase tracking-widest text-neutral-400 group-hover:text-white">{name}</p>
+              <p className="mt-2 text-[10px] text-neutral-600 font-light leading-relaxed group-hover:text-neutral-400">{desc}</p>
             </div>
           ))}
         </div>
-        <p className="mt-3 text-xs text-muted-foreground">
-          Keep using UniBridge to unlock badges and earn more points.
-        </p>
       </div>
     </div>
   );
