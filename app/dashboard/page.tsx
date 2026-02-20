@@ -100,8 +100,8 @@ export default async function DashboardPage() {
             <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#0A8F6A] mb-4">Academic Overview</p>
             <h1 className="text-4xl md:text-5xl font-medium tracking-tighter">Welcome back, {displayName}</h1>
             <p className="text-sm text-neutral-400 font-light max-w-xl">
-              <span className="text-[#0A8F6A] font-bold">Institution:</span> {profile.university || "Not set"} Â·{" "}
-              <span className="uppercase text-[9px] font-bold tracking-widest bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">{profile.role || "user"}</span> Â·{" "}
+              <span className="text-[#0A8F6A] font-bold">Institution:</span> {profile.university || "Not set"} -{" "}
+              <span className="uppercase text-[9px] font-bold tracking-widest bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">{profile.role || "user"}</span> -{" "}
               <span className="uppercase text-[9px] font-bold tracking-widest text-[#0A8F6A] bg-[#0A8F6A]/10 border border-[#0A8F6A]/20 px-2 py-0.5 rounded-md">{profile.plan || "basic"} Plan</span>
             </p>
           </div>
@@ -189,7 +189,7 @@ export default async function DashboardPage() {
                       )}
                     </div>
                     <p className="text-xs text-neutral-500">
-                      {lecture.course_code} Â· {lecture.lecturer_name}
+                      {lecture.course_code} - {lecture.lecturer_name}
                     </p>
                     <p className="mt-0.5 flex items-center gap-1 text-xs text-neutral-500">
                       <Calendar01Icon size={12} />
@@ -239,7 +239,7 @@ export default async function DashboardPage() {
                       <span className="text-xs text-neutral-500">{resource.course_code}</span>
                     </div>
                     <p className="mt-0.5 text-xs text-neutral-500">
-                      {resource.downloads} downloads Â· â˜… {resource.rating} Â· {timeAgo(resource.created_at)}
+                      {resource.downloads} downloads - * {resource.rating} - {timeAgo(resource.created_at)}
                     </p>
                   </div>
                 </div>

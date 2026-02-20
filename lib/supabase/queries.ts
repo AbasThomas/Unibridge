@@ -92,6 +92,72 @@ export async function getUpcomingLectures(supabase: SupabaseClient, limit = 5) {
   return data ?? [];
 }
 
+export async function createLecture(
+  supabase: SupabaseClient,
+  lecture: {
+    title: string;
+    course_code: string;
+    lecturer_id: string;
+    lecturer_name: string;
+    university: string;
+    department: string;
+    scheduled_at: string;
+    duration?: number;
+    description?: string;
+    tags?: string[];
+    stream_url?: string;
+    is_live?: boolean;
+    is_recorded?: boolean;
+    offline_available?: boolean;
+  },
+) {
+  const { data, error } = await supabase.from("lectures").insert(lecture).select().single();
+  if (error) throw error;
+  return data;
+}
+
+export async function updateLecture(
+  supabase: SupabaseClient,
+  lectureId: string,
+  updates: Record<string, unknown>,
+) {
+  const { data, error } = await supabase
+    .from("lectures")
+    .update(updates)
+    .eq("id", lectureId)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function setLectureLiveStatus(
+  supabase: SupabaseClient,
+  lectureId: string,
+  isLive: boolean,
+) {
+  const { data, error } = await supabase
+    .from("lectures")
+    .update({ is_live: isLive })
+    .eq("id", lectureId)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function updateLectureAttendees(
+  supabase: SupabaseClient,
+  lectureId: string,
+  attendees: number,
+) {
+  const { error } = await supabase
+    .from("lectures")
+    .update({ attendees })
+    .eq("id", lectureId);
+  if (error) throw error;
+}
+
 // ─── Resources ───────────────────────────────────────────────────────────────
 
 export async function getResources(
@@ -160,7 +226,7 @@ export async function incrementDownload(supabase: SupabaseClient, resourceId: st
 
 export async function getOpportunities(
   supabase: SupabaseClient,
-  filters?: { type?: string; isRemote?: boolean; search?: string },
+  filters?: { type?: string; isRemote?: boolean; search?: string; createdBy?: string },
   limit = 20,
 ) {
   let query = supabase
@@ -173,10 +239,41 @@ export async function getOpportunities(
   if (filters?.type) query = query.eq("type", filters.type);
   if (filters?.isRemote !== undefined) query = query.eq("is_remote", filters.isRemote);
   if (filters?.search) query = query.ilike("title", `%${filters.search}%`);
+  if (filters?.createdBy) query = query.eq("created_by", filters.createdBy);
 
   const { data, error } = await query;
   if (error) throw error;
   return data ?? [];
+}
+
+export async function createOpportunity(
+  supabase: SupabaseClient,
+  opportunity: {
+    title: string;
+    type: "scholarship" | "bursary" | "gig" | "internship" | "grant";
+    organization: string;
+    description?: string;
+    amount?: number;
+    currency?: string;
+    deadline: string;
+    requirements?: string[];
+    skills?: string[];
+    location?: string;
+    is_remote?: boolean;
+    application_url?: string;
+    tags?: string[];
+    created_by: string;
+    submitted_by_name?: string;
+    is_approved?: boolean;
+  },
+) {
+  const { data, error } = await supabase
+    .from("opportunities")
+    .insert(opportunity)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
 }
 
 // ─── Notifications ────────────────────────────────────────────────────────────
@@ -295,4 +392,33 @@ export async function getAllUsers(supabase: SupabaseClient, limit = 50) {
     .limit(limit);
   if (error) throw error;
   return data ?? [];
+}
+
+export async function getLeaderboard(supabase: SupabaseClient, limit = 20) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id, name, university, points, avatar")
+    .order("points", { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return data ?? [];
+}
+
+export async function addUserPoints(supabase: SupabaseClient, userId: string, pointsToAdd: number) {
+  const { data: current, error: currentError } = await supabase
+    .from("profiles")
+    .select("points")
+    .eq("id", userId)
+    .single();
+  if (currentError) throw currentError;
+
+  const nextPoints = Math.max(0, (current?.points ?? 0) + pointsToAdd);
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ points: nextPoints, updated_at: new Date().toISOString() })
+    .eq("id", userId)
+    .select("points")
+    .single();
+  if (error) throw error;
+  return data?.points ?? nextPoints;
 }

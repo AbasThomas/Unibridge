@@ -86,6 +86,12 @@ create policy "Lecturers can update their own lectures"
   on public.lectures for update
   using (auth.uid() = lecturer_id);
 
+create policy "Admins can manage lectures"
+  on public.lectures for all
+  using (exists (
+    select 1 from public.profiles where id = auth.uid() and role = 'admin'
+  ));
+
 -- ------------------------------------------------------------
 create table if not exists public.resources (
   id uuid primary key default gen_random_uuid(),
@@ -154,6 +160,9 @@ create table if not exists public.opportunities (
   title text not null,
   type text not null check (type in ('scholarship', 'bursary', 'gig', 'internship', 'grant')),
   organization text not null,
+  created_by uuid references public.profiles(id) on delete set null,
+  submitted_by_name text default '',
+  is_approved boolean default true,
   description text default '',
   amount decimal,
   currency text default 'NGN',
@@ -170,7 +179,22 @@ create table if not exists public.opportunities (
 alter table public.opportunities enable row level security;
 
 create policy "Opportunities viewable by everyone"
-  on public.opportunities for select using (true);
+  on public.opportunities for select
+  using (
+    is_approved = true
+    or auth.uid() = created_by
+    or exists (
+      select 1 from public.profiles where id = auth.uid() and role = 'admin'
+    )
+  );
+
+create policy "Authenticated users can submit opportunities"
+  on public.opportunities for insert
+  with check (auth.uid() = created_by);
+
+create policy "Users can update their own opportunities"
+  on public.opportunities for update
+  using (auth.uid() = created_by);
 
 create policy "Admins can manage opportunities"
   on public.opportunities for all
@@ -222,3 +246,4 @@ alter publication supabase_realtime add table public.lectures;
 alter publication supabase_realtime add table public.notifications;
 alter publication supabase_realtime add table public.resources;
 alter publication supabase_realtime add table public.chat_messages;
+alter publication supabase_realtime add table public.opportunities;
