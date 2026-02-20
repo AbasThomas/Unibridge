@@ -119,9 +119,14 @@ export default function RegisterPage() {
       {/* Left panel */}
       <div className="hidden flex-col justify-between p-12 text-white lg:flex lg:w-1/2 relative z-10 border-r border-white/5 bg-black/40 backdrop-blur-sm">
         <Link href="/" className="flex items-center gap-1.5 group">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600/20 border border-emerald-500/30 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(10,143,106,0.2)] overflow-hidden">
-            <Image src="/logo.png" alt="UniBridge logo" width={44} height={44} className="h-11 w-11 object-contain" priority />
-          </div>
+          <Image
+            src="/logo.png"
+            alt="UniBridge logo"
+            width={44}
+            height={44}
+            className="h-11 w-11 object-contain transition-transform group-hover:scale-110"
+            priority
+          />
           <span className="font-bold text-2xl tracking-tight uppercase leading-none">UniBridge</span>
         </Link>
 
@@ -158,9 +163,14 @@ export default function RegisterPage() {
       <div className="flex flex-1 flex-col items-center justify-center px-4 py-12 md:px-8 relative z-10">
         <div className="w-full max-w-md">
           <Link href="/" className="mb-12 flex items-center gap-1.5 lg:hidden justify-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600/20 border border-emerald-500/30 shadow-[0_0_15px_rgba(10,143,106,0.2)] overflow-hidden">
-              <Image src="/logo.png" alt="UniBridge logo" width={44} height={44} className="h-11 w-11 object-contain" priority />
-            </div>
+            <Image
+              src="/logo.png"
+              alt="UniBridge logo"
+              width={44}
+              height={44}
+              className="h-11 w-11 object-contain"
+              priority
+            />
             <span className="font-bold text-2xl tracking-tight text-white uppercase leading-none">UniBridge</span>
           </Link>
 
