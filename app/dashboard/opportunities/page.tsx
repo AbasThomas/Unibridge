@@ -67,6 +67,7 @@ const OPP_TYPES = ["scholarship", "bursary", "gig", "internship", "grant"] as co
 export default function OpportunitiesPage() {
   const searchParams = useSearchParams();
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+  const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity | null>(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
@@ -457,7 +458,16 @@ export default function OpportunitiesPage() {
             return (
               <div
                 key={opportunity.id}
-                className="glass-panel flex flex-col rounded-2xl p-6 shadow-2xl group hover:border-[#0A8F6A]/30 transition-all duration-500"
+                role="button"
+                tabIndex={0}
+                onClick={() => setSelectedOpportunity(opportunity)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    setSelectedOpportunity(opportunity);
+                  }
+                }}
+                className="glass-panel flex cursor-pointer flex-col rounded-2xl p-6 shadow-2xl group hover:border-[#0A8F6A]/30 transition-all duration-500"
               >
                 <div className="flex items-start justify-between gap-2">
                   <span
@@ -494,6 +504,7 @@ export default function OpportunitiesPage() {
                       href={opportunity.contact_link}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={(event) => event.stopPropagation()}
                       className="mt-2 inline-flex text-[10px] font-bold uppercase tracking-widest text-[#0A8F6A] hover:underline"
                     >
                       Contact Profile
@@ -535,6 +546,7 @@ export default function OpportunitiesPage() {
                   href={opportunity.application_url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(event) => event.stopPropagation()}
                   className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-[#0A8F6A] py-3 text-xs font-bold uppercase tracking-widest text-white hover:opacity-90 transition-all shadow-lg shadow-emerald-500/20"
                 >
                   Apply Now <ArrowUpRight01Icon size={16} />
@@ -542,6 +554,159 @@ export default function OpportunitiesPage() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {selectedOpportunity && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-xl p-4">
+          <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-white/10 bg-black/90 p-8 shadow-2xl">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-[#0A8F6A] font-semibold">{selectedOpportunity.organization}</p>
+                <h2 className="mt-2 text-xl font-medium tracking-tight text-white">{selectedOpportunity.title}</h2>
+              </div>
+              <button
+                onClick={() => setSelectedOpportunity(null)}
+                className="rounded-full p-2 bg-white/5 border border-white/5 text-neutral-500 hover:text-white transition-all"
+              >
+                <Cancel01Icon size={16} />
+              </button>
+            </div>
+
+            <div className="mt-5 flex flex-wrap items-center gap-2">
+              <span
+                className={cn(
+                  "rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest border",
+                  getOpportunityTypeColor(selectedOpportunity.type),
+                )}
+              >
+                {selectedOpportunity.type}
+              </span>
+              {selectedOpportunity.matchScore !== undefined && (
+                <span className="rounded-full bg-[#0A8F6A] px-3 py-1 text-[10px] font-bold text-white uppercase tracking-widest">
+                  {(selectedOpportunity.matchScore * 100).toFixed(0)}% MATCH
+                </span>
+              )}
+              <span className="rounded-full border border-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                Deadline: {new Date(selectedOpportunity.deadline).toLocaleDateString()}
+              </span>
+            </div>
+
+            {selectedOpportunity.description && (
+              <div className="mt-6">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Description</p>
+                <p className="mt-2 text-sm leading-relaxed text-neutral-300">{selectedOpportunity.description}</p>
+              </div>
+            )}
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Location</p>
+                <p className="mt-2 text-sm text-neutral-200">
+                  {selectedOpportunity.location}
+                  {selectedOpportunity.is_remote ? " (Remote)" : ""}
+                </p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Compensation</p>
+                <p className="mt-2 text-sm text-neutral-200">
+                  {selectedOpportunity.amount ? formatNaira(selectedOpportunity.amount) : "Not specified"}
+                </p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Contact Person</p>
+                <p className="mt-2 text-sm text-neutral-200">{selectedOpportunity.contact_person || "Not specified"}</p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Submitted By</p>
+                <p className="mt-2 text-sm text-neutral-200">{selectedOpportunity.submitted_by_name || "Unknown"}</p>
+              </div>
+            </div>
+
+            {selectedOpportunity.requirements.length > 0 && (
+              <div className="mt-6">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Requirements</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {selectedOpportunity.requirements.map((requirement) => (
+                    <span
+                      key={requirement}
+                      className="rounded-md border border-white/10 bg-white/[0.02] px-2.5 py-1 text-[11px] text-neutral-300"
+                    >
+                      {requirement}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {selectedOpportunity.skills.length > 0 && (
+              <div className="mt-6">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Skills</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {selectedOpportunity.skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="rounded-md border border-[#0A8F6A]/30 bg-[#0A8F6A]/10 px-2.5 py-1 text-[11px] text-[#8ceacb]"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {selectedOpportunity.tags.length > 0 && (
+              <div className="mt-6">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Tags</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {selectedOpportunity.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-md border border-white/10 bg-white/[0.02] px-2.5 py-1 text-[11px] text-neutral-300"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {selectedOpportunity.matchReason && (
+              <div className="mt-6 rounded-lg bg-[#0A8F6A]/5 border border-[#0A8F6A]/10 p-3 italic text-xs text-neutral-400 font-light">
+                <span className="text-[#0A8F6A] font-bold not-italic">AI Rationale:</span> {selectedOpportunity.matchReason}
+              </div>
+            )}
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              {selectedOpportunity.contact_link ? (
+                <a
+                  href={selectedOpportunity.contact_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex flex-1 items-center justify-center rounded-xl border border-white/10 bg-white/5 py-3 text-xs font-bold uppercase tracking-widest text-white hover:bg-white/10 transition-all"
+                >
+                  Contact Profile
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  className="inline-flex flex-1 items-center justify-center rounded-xl border border-white/10 bg-white/5 py-3 text-xs font-bold uppercase tracking-widest text-neutral-500"
+                >
+                  Contact Profile
+                </button>
+              )}
+
+              <a
+                href={selectedOpportunity.application_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#0A8F6A] py-3 text-xs font-bold uppercase tracking-widest text-white shadow-lg shadow-emerald-500/20 hover:opacity-90 transition-all"
+              >
+                Apply Now <ArrowUpRight01Icon size={16} />
+              </a>
+            </div>
+          </div>
         </div>
       )}
 
