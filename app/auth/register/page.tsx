@@ -10,36 +10,6 @@ import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
-const UNIVERSITIES = [
-  "University of Lagos (UNILAG)",
-  "Obafemi Awolowo University (OAU)",
-  "University of Ibadan (UI)",
-  "Ahmadu Bello University (ABU)",
-  "University of Nigeria Nsukka (UNN)",
-  "University of Benin (UNIBEN)",
-  "Lagos State University (LASU)",
-  "University of Port Harcourt (UNIPORT)",
-  "Bayero University Kano (BUK)",
-  "Federal University of Technology Akure (FUTA)",
-  "Other",
-];
-
-const DEPARTMENTS = [
-  "Computer Science",
-  "Engineering",
-  "Medicine",
-  "Law",
-  "Economics",
-  "Social Sciences",
-  "Arts & Humanities",
-  "Natural Sciences",
-  "Education",
-  "Business Administration",
-  "Agriculture",
-  "Architecture",
-  "Other",
-];
-
 export default function RegisterPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
@@ -51,8 +21,8 @@ export default function RegisterPage() {
     email: "",
     password: "",
     role: "student" as "student" | "lecturer" | "admin",
-    university: "University of Lagos (UNILAG)",
-    department: "Computer Science",
+    university: "",
+    department: "",
     matricNumber: "",
   });
 
@@ -298,28 +268,26 @@ export default function RegisterPage() {
 
               <div className="space-y-1.5">
                 <label className="pl-1 text-[11px] font-bold text-neutral-500 uppercase tracking-widest">Primary Institution</label>
-                <select
+                <input
+                  type="text"
                   value={form.university}
                   onChange={(e) => update("university", e.target.value)}
+                  required
+                  placeholder="Enter your institution"
                   className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm text-white outline-none ring-emerald-500/20 transition-all focus:ring-4 focus:border-emerald-500/30 appearance-none"
-                >
-                  {UNIVERSITIES.map((u) => (
-                    <option key={u} value={u} className="bg-neutral-900">{u}</option>
-                  ))}
-                </select>
+                />
               </div>
 
               <div className="space-y-1.5">
                 <label className="pl-1 text-[11px] font-bold text-neutral-500 uppercase tracking-widest">Faculty / Department</label>
-                <select
+                <input
+                  type="text"
                   value={form.department}
                   onChange={(e) => update("department", e.target.value)}
+                  required
+                  placeholder="Enter your faculty or department"
                   className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm text-white outline-none ring-emerald-500/20 transition-all focus:ring-4 focus:border-emerald-500/30 appearance-none"
-                >
-                  {DEPARTMENTS.map((d) => (
-                    <option key={d} value={d} className="bg-neutral-900">{d}</option>
-                  ))}
-                </select>
+                />
               </div>
 
               {form.role === "student" && (
@@ -331,7 +299,7 @@ export default function RegisterPage() {
                     type="text"
                     value={form.matricNumber}
                     onChange={(e) => update("matricNumber", e.target.value)}
-                    placeholder="190404001"
+                    placeholder="Enter matric number (optional)"
                     className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-neutral-600 outline-none ring-emerald-500/20 transition-all focus:ring-4 focus:border-emerald-500/30"
                   />
                 </div>

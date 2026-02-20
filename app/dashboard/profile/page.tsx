@@ -246,10 +246,10 @@ export default function ProfilePage() {
 
           <div className="grid gap-6 sm:grid-cols-2">
             {[
-              { label: "Full Name", key: "name", placeholder: "Tunde Adesanya" },
-              { label: "Institution", key: "university", placeholder: "University of Lagos" },
-              { label: "Department", key: "department", placeholder: "Computer Science" },
-              { label: "Matric Number", key: "matric_number", placeholder: "190404001" },
+              { label: "Full Name", key: "name", placeholder: "Enter your full name" },
+              { label: "Institution", key: "university", placeholder: "Enter your institution" },
+              { label: "Department", key: "department", placeholder: "Enter your department" },
+              { label: "Matric Number", key: "matric_number", placeholder: "Enter your matric number" },
             ].map(({ label, key, placeholder }) => (
               <div key={key}>
                 <label className="mb-2 block text-[10px] font-bold uppercase tracking-widest text-neutral-500">{label}</label>

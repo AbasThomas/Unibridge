@@ -49,13 +49,14 @@ export default function ResourcesPage() {
   const [showUpload, setShowUpload] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [defaultUniversity, setDefaultUniversity] = useState("");
 
   const [uploadForm, setUploadForm] = useState({
     title: "",
     description: "",
     type: "notes",
     course_code: "",
-    university: "University of Lagos",
+    university: "",
     department: "",
     year: new Date().getFullYear(),
     tags: "",
@@ -81,6 +82,29 @@ export default function ResourcesPage() {
     const timer = setTimeout(() => void loadResources(), 300);
     return () => clearTimeout(timer);
   }, [loadResources]);
+
+  useEffect(() => {
+    const loadProfileDefaults = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data } = await supabase
+        .from("profiles")
+        .select("university")
+        .eq("id", user.id)
+        .single();
+
+      const university = data?.university ?? "";
+      setDefaultUniversity(university);
+      if (university) {
+        setUploadForm((prev) => ({ ...prev, university: prev.university || university }));
+      }
+    };
+
+    void loadProfileDefaults();
+  }, [supabase]);
 
   useEffect(() => {
     const channel = supabase
@@ -156,7 +180,7 @@ export default function ResourcesPage() {
       setShowUpload(false);
       setUploadForm({
         title: "", description: "", type: "notes", course_code: "",
-        university: "University of Lagos", department: "", year: new Date().getFullYear(),
+        university: defaultUniversity, department: "", year: new Date().getFullYear(),
         tags: "", is_premium: false,
       });
       setSelectedFile(null);
@@ -355,7 +379,7 @@ export default function ResourcesPage() {
                 <input
                   value={uploadForm.title}
                   onChange={(e) => setUploadForm((f) => ({ ...f, title: e.target.value }))}
-                  placeholder="CSC 201 Comprehensive Notes"
+                  placeholder="Enter resource title"
                   className="w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none ring-primary/50 focus:ring-2"
                   required
                 />
@@ -377,7 +401,7 @@ export default function ResourcesPage() {
                   <input
                     value={uploadForm.course_code}
                     onChange={(e) => setUploadForm((f) => ({ ...f, course_code: e.target.value.toUpperCase() }))}
-                    placeholder="CSC 201"
+                    placeholder="Enter course code"
                     className="w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none ring-primary/50 focus:ring-2"
                     required
                   />
@@ -389,7 +413,7 @@ export default function ResourcesPage() {
                 <input
                   value={uploadForm.department}
                   onChange={(e) => setUploadForm((f) => ({ ...f, department: e.target.value }))}
-                  placeholder="Computer Science"
+                  placeholder="Enter department"
                   className="w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none ring-primary/50 focus:ring-2"
                   required
                 />
@@ -400,7 +424,7 @@ export default function ResourcesPage() {
                 <textarea
                   value={uploadForm.description}
                   onChange={(e) => setUploadForm((f) => ({ ...f, description: e.target.value }))}
-                  placeholder="Brief description of what this resource covers…"
+                  placeholder="Provide a brief resource description"
                   rows={3}
                   className="w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none ring-primary/50 focus:ring-2"
                 />
@@ -411,7 +435,7 @@ export default function ResourcesPage() {
                 <input
                   value={uploadForm.tags}
                   onChange={(e) => setUploadForm((f) => ({ ...f, tags: e.target.value }))}
-                  placeholder="data-structures, algorithms"
+                  placeholder="Enter tags separated by commas"
                   className="w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none ring-primary/50 focus:ring-2"
                 />
               </div>
@@ -433,7 +457,7 @@ export default function ResourcesPage() {
                   className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-white disabled:opacity-60"
                 >
                   {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
-                  {uploading ? "Submitting…" : "Submit for Review"}
+                  {uploading ? "Submitting..." : "Submit for Review"}
                 </button>
               </div>
             </form>

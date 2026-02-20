@@ -86,13 +86,13 @@ export default function LoginPage() {
             Live Network Telemetry
           </div>
           <blockquote className="text-2xl font-light leading-relaxed text-neutral-200 italic">
-            &ldquo;The autonomous intelligence systems identified precise opportunities tailored to my trajectory. This operates beyond a portal; it is a definitive framework for academic acceleration.&rdquo;
+            &ldquo;UniBridge helps me prioritize study tasks, discover verified resources, and respond to deadlines with clarity.&rdquo;
           </blockquote>
           <div className="mt-8 flex items-center gap-4">
             <div className="w-10 h-10 rounded-full bg-neutral-800 border border-white/10" />
             <div>
-              <p className="text-sm font-semibold text-white">Tunde Adesanya</p>
-              <p className="text-xs text-neutral-500">Computer Science • Unilag</p>
+              <p className="text-sm font-semibold text-white">UniBridge Member</p>
+              <p className="text-xs text-neutral-500">Verified account</p>
             </div>
           </div>
         </div>
@@ -192,7 +192,7 @@ export default function LoginPage() {
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
+                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                     className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 pr-12 text-sm text-white placeholder:text-neutral-600 outline-none ring-emerald-500/20 transition-all focus:ring-4 focus:border-emerald-500/30"
                     required
                   />

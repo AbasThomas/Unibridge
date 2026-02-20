@@ -55,6 +55,11 @@ export default function OpportunitiesPage() {
     location: "",
     gpa: "",
   });
+  const [profileContext, setProfileContext] = useState({
+    university: "",
+    department: "",
+    level: "",
+  });
   const [showMatchPanel, setShowMatchPanel] = useState(false);
 
   const supabase = useMemo(() => createClient(), []);
@@ -104,10 +109,13 @@ export default function OpportunitiesPage() {
 
       setProfile((prev) => ({
         ...prev,
-        skills: prev.skills || (department ? `${department.toLowerCase()}, communication` : ""),
-        interests: prev.interests || "scholarship, internship",
-        location: prev.location || university || "Lagos",
+        location: prev.location || university,
       }));
+      setProfileContext({
+        university,
+        department,
+        level: "",
+      });
     };
 
     void loadProfileDefaults();
@@ -127,9 +135,9 @@ export default function OpportunitiesPage() {
             interests: parseList(profile.interests),
             location: profile.location,
             gpa: profile.gpa ? Number(profile.gpa) : undefined,
-            university: "University of Lagos",
-            department: "Computer Science",
-            level: "300L",
+            university: profileContext.university || undefined,
+            department: profileContext.department || undefined,
+            level: profileContext.level || undefined,
           },
           opportunities: opportunities.map((o) => ({
             id: o.id,
@@ -347,10 +355,10 @@ export default function OpportunitiesPage() {
 
             <div className="space-y-5 relative z-10">
               {[
-                { label: "SKILLS (CSV)", key: "skills", placeholder: "react, python, research writing" },
-                { label: "INTERESTS (CSV)", key: "interests", placeholder: "scholarship, internship, tutoring" },
-                { label: "LOCATION", key: "location", placeholder: "Lagos" },
-                { label: "CGPA", key: "gpa", placeholder: "3.8" },
+                { label: "SKILLS (CSV)", key: "skills", placeholder: "Enter skills separated by commas" },
+                { label: "INTERESTS (CSV)", key: "interests", placeholder: "Enter interests separated by commas" },
+                { label: "LOCATION", key: "location", placeholder: "Enter preferred location" },
+                { label: "CGPA", key: "gpa", placeholder: "Enter your CGPA" },
               ].map(({ label, key, placeholder }) => (
                 <div key={key}>
                   <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">{label}</label>

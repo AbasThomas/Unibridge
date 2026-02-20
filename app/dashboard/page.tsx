@@ -13,7 +13,7 @@ import { getLectures, getResources, getOpportunities } from "@/lib/supabase/quer
 import { formatNaira, formatDateTime, timeAgo } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
-// ─── Stat Card ────────────────────────────────────────────────────────────────
+// Stat Card
 
 function StatCard({
   label,
@@ -45,7 +45,7 @@ function StatCard({
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// Page
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -82,7 +82,7 @@ export default async function DashboardPage() {
     resources = (resourceRes ?? []) as typeof resources;
     opportunities = (oppRes ?? []) as typeof opportunities;
   } catch {
-    // Supabase not configured — show empty states
+    // Supabase not configured - show empty states
   }
 
   const displayName = profile.name || user.user_metadata?.full_name || user.email?.split("@")[0] || "Student";
@@ -100,9 +100,9 @@ export default async function DashboardPage() {
             <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#0A8F6A] mb-4">Academic Overview</p>
             <h1 className="text-4xl md:text-5xl font-medium tracking-tighter">Welcome back, {displayName}</h1>
             <p className="text-sm text-neutral-400 font-light max-w-xl">
-              <span className="text-[#0A8F6A] font-bold">Institution:</span> {profile.university ?? "University of Lagos"} ·{" "}
-              <span className="uppercase text-[9px] font-bold tracking-widest bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">{profile.role ?? "Student"}</span> ·{" "}
-              <span className="uppercase text-[9px] font-bold tracking-widest text-[#0A8F6A] bg-[#0A8F6A]/10 border border-[#0A8F6A]/20 px-2 py-0.5 rounded-md">{profile.plan ?? "Standard"} Plan</span>
+              <span className="text-[#0A8F6A] font-bold">Institution:</span> {profile.university || "Not set"} Â·{" "}
+              <span className="uppercase text-[9px] font-bold tracking-widest bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">{profile.role || "user"}</span> Â·{" "}
+              <span className="uppercase text-[9px] font-bold tracking-widest text-[#0A8F6A] bg-[#0A8F6A]/10 border border-[#0A8F6A]/20 px-2 py-0.5 rounded-md">{profile.plan || "basic"} Plan</span>
             </p>
           </div>
 
@@ -189,7 +189,7 @@ export default async function DashboardPage() {
                       )}
                     </div>
                     <p className="text-xs text-neutral-500">
-                      {lecture.course_code} · {lecture.lecturer_name}
+                      {lecture.course_code} Â· {lecture.lecturer_name}
                     </p>
                     <p className="mt-0.5 flex items-center gap-1 text-xs text-neutral-500">
                       <Calendar01Icon size={12} />
@@ -198,7 +198,7 @@ export default async function DashboardPage() {
                   </div>
                   {lecture.is_live && (
                     <Link
-                      href={`/ dashboard / lectures`}
+                      href="/dashboard/lectures"
                       className="shrink-0 rounded-lg bg-red-500 px-2.5 py-1 text-[10px] font-semibold text-white hover:bg-red-600 transition-colors shadow-lg shadow-red-500/20"
                     >
                       Join
@@ -239,7 +239,7 @@ export default async function DashboardPage() {
                       <span className="text-xs text-neutral-500">{resource.course_code}</span>
                     </div>
                     <p className="mt-0.5 text-xs text-neutral-500">
-                      {resource.downloads} downloads · ⭐ {resource.rating} · {timeAgo(resource.created_at)}
+                      {resource.downloads} downloads Â· â˜… {resource.rating} Â· {timeAgo(resource.created_at)}
                     </p>
                   </div>
                 </div>

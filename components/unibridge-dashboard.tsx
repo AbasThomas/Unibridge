@@ -124,38 +124,35 @@ export function UniBridgeDashboard() {
     { label: "Live Lectures", value: "0" },
   ]);
   const [opportunityPool, setOpportunityPool] = useState<OpportunityPayload[]>([]);
+  const [profileContext, setProfileContext] = useState({
+    university: "",
+    department: "",
+    level: "",
+  });
 
-  const [summaryInput, setSummaryInput] = useState(
-    "Data Structures lecture covered stacks, queues, and tree traversal, including time complexity comparisons for BFS and DFS.",
-  );
+  const [summaryInput, setSummaryInput] = useState("");
   const [summaryLanguage, setSummaryLanguage] = useState<SupportedLanguage>("en");
   const [summaryResult, setSummaryResult] = useState<SummaryResponse | null>(null);
   const [summaryLoading, setSummaryLoading] = useState(false);
 
-  const [moderationInput, setModerationInput] = useState(
-    "Comprehensive UNILAG GST notes with solved examples and properly cited references.",
-  );
+  const [moderationInput, setModerationInput] = useState("");
   const [moderationResult, setModerationResult] = useState<ModerateResponse | null>(null);
   const [moderationLoading, setModerationLoading] = useState(false);
 
-  const [translationInput, setTranslationInput] = useState(
-    "Mid-semester examinations begin next Monday. Please download your revision materials before Friday.",
-  );
+  const [translationInput, setTranslationInput] = useState("");
   const [translationLanguage, setTranslationLanguage] = useState<SupportedLanguage>("yo");
   const [translationResult, setTranslationResult] = useState<TranslateResponse | null>(null);
   const [translationLoading, setTranslationLoading] = useState(false);
 
-  const [skills, setSkills] = useState("react, typescript, research writing");
-  const [interests, setInterests] = useState("internship, scholarship, tutoring");
-  const [location, setLocation] = useState("Lagos");
-  const [gpa, setGpa] = useState("3.8");
+  const [skills, setSkills] = useState("");
+  const [interests, setInterests] = useState("");
+  const [location, setLocation] = useState("");
+  const [gpa, setGpa] = useState("");
   const [matchLoading, setMatchLoading] = useState(false);
   const [matchResult, setMatchResult] = useState<MatchResponse | null>(null);
 
-  const [checkinMood, setCheckinMood] = useState("stressed");
-  const [checkinInput, setCheckinInput] = useState(
-    "I have multiple deadlines this week and I need help prioritizing my workload.",
-  );
+  const [checkinMood, setCheckinMood] = useState("neutral");
+  const [checkinInput, setCheckinInput] = useState("");
   const [checkinLoading, setCheckinLoading] = useState(false);
   const [checkinResult, setCheckinResult] = useState<CheckinResponse | null>(null);
 
@@ -190,13 +187,13 @@ export function UniBridgeDashboard() {
         description: item.description ?? "",
         deadline: item.deadline,
         isRemote: item.is_remote ?? false,
-        location: item.location ?? "Nigeria",
+        location: item.location ?? "",
         applicationUrl: item.application_url ?? "",
         skills: item.skills ?? [],
         requirements: item.requirements ?? [],
         tags: item.tags ?? [],
         amount: item.amount ?? undefined,
-        currency: item.currency ?? "NGN",
+        currency: item.currency ?? undefined,
       }));
       setOpportunityPool(mappedOpportunities);
     } catch {
@@ -224,6 +221,32 @@ export function UniBridgeDashboard() {
     void loadStatus();
     void loadOperationalData();
   }, [loadOperationalData]);
+
+  useEffect(() => {
+    const loadProfileContext = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data } = await supabase
+        .from("profiles")
+        .select("university, department")
+        .eq("id", user.id)
+        .single();
+
+      setProfileContext({
+        university: data?.university ?? "",
+        department: data?.department ?? "",
+        level: "",
+      });
+      if (data?.university) {
+        setLocation((prev) => prev || data.university);
+      }
+    };
+
+    void loadProfileContext();
+  }, [supabase]);
 
   const parseList = (value: string) =>
     value
@@ -287,9 +310,9 @@ export function UniBridgeDashboard() {
           interests: parseList(interests),
           location,
           gpa: gpa ? Number(gpa) : undefined,
-          university: "University of Lagos",
-          department: "Computer Science",
-          level: "300L",
+          university: profileContext.university || undefined,
+          department: profileContext.department || undefined,
+          level: profileContext.level || undefined,
         },
         opportunities: opportunityPool,
       });
@@ -547,25 +570,25 @@ export function UniBridgeDashboard() {
                 value={skills}
                 onChange={(event) => setSkills(event.target.value)}
                 className="rounded-lg border border-white/10 bg-black/20 px-4 py-2.5 text-xs text-neutral-300 transition-colors focus:border-[#0A8F6A]/50 focus:outline-none"
-                placeholder="Skills (comma separated)"
+                placeholder="Enter skills (comma separated)"
               />
               <input
                 value={interests}
                 onChange={(event) => setInterests(event.target.value)}
                 className="rounded-lg border border-white/10 bg-black/20 px-4 py-2.5 text-xs text-neutral-300 transition-colors focus:border-[#0A8F6A]/50 focus:outline-none"
-                placeholder="Interests (comma separated)"
+                placeholder="Enter interests (comma separated)"
               />
               <input
                 value={location}
                 onChange={(event) => setLocation(event.target.value)}
                 className="rounded-lg border border-white/10 bg-black/20 px-4 py-2.5 text-xs text-neutral-300 transition-colors focus:border-[#0A8F6A]/50 focus:outline-none"
-                placeholder="Location"
+                placeholder="Enter preferred location"
               />
               <input
                 value={gpa}
                 onChange={(event) => setGpa(event.target.value)}
                 className="rounded-lg border border-white/10 bg-black/20 px-4 py-2.5 text-xs text-neutral-300 transition-colors focus:border-[#0A8F6A]/50 focus:outline-none"
-                placeholder="CGPA"
+                placeholder="Enter your CGPA"
               />
             </div>
             <button
