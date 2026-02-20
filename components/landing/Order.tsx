@@ -1,11 +1,28 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useRef } from "react";
-import { Infinity, Trash, Clock, ShieldCheck, Lock, Plus } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Infinity, Trash, Clock, ShieldCheck, Lock, Plus, Users, Zap } from "lucide-react";
 
 export function Order() {
     const containerRef = useRef<HTMLDivElement>(null);
+    const [liveStats, setLiveStats] = useState({
+        activeStudents: 1240,
+        currentDiscount: 15,
+        lastUpdate: new Date().toLocaleTimeString()
+    });
+
+    useEffect(() => {
+        // Simulate WebSocket connection for live pricing/stats
+        const interval = setInterval(() => {
+            setLiveStats(prev => ({
+                activeStudents: prev.activeStudents + Math.floor(Math.random() * 5),
+                currentDiscount: Math.max(5, Math.min(25, prev.currentDiscount + (Math.random() > 0.5 ? 1 : -1))),
+                lastUpdate: new Date().toLocaleTimeString()
+            }));
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -34,13 +51,35 @@ export function Order() {
                     <h2 className="text-4xl md:text-5xl font-medium text-white tracking-tighter mb-8">
                         Initialize Your Success Today.
                     </h2>
-                    <p className="text-neutral-400 mb-16 text-sm font-light">
+                    <p className="text-neutral-400 mb-8 text-sm font-light">
                         Scalable solutions for students of all levels.
                         <br />
                         <span className="text-neutral-300">
                             ROI-focused. Rapid deployment. Systems that never sleep.
                         </span>
                     </p>
+
+                    {/* Live Analytics Hub */}
+                    <div className="flex flex-wrap justify-center gap-4 mb-16">
+                        <div className="glass-panel px-6 py-3 rounded-full flex items-center gap-3 border-[#0A8F6A]/20 bg-[#0A8F6A]/5">
+                            <Users className="w-4 h-4 text-[#0A8F6A]" />
+                            <span className="text-xs font-semibold text-white tracking-wider uppercase">
+                                {liveStats.activeStudents.toLocaleString()} Active Students
+                            </span>
+                        </div>
+                        <div className="glass-panel px-6 py-3 rounded-full flex items-center gap-3 border-emerald-500/20 bg-emerald-500/5">
+                            <Zap className="w-4 h-4 text-emerald-400" />
+                            <span className="text-xs font-semibold text-white tracking-wider uppercase">
+                                {liveStats.currentDiscount}% Dynamic Discount
+                            </span>
+                        </div>
+                        <div className="glass-panel px-6 py-3 rounded-full flex items-center gap-3 border-white/5 bg-white/5">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#0A8F6A] animate-pulse" />
+                            <span className="text-[10px] font-medium text-neutral-400 tracking-widest uppercase">
+                                Live Feed: {liveStats.lastUpdate}
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">

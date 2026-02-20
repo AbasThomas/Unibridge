@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2, Zap } from "lucide-react";
+import { Eye, EyeOff, Loader2, Zap, Users } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
@@ -53,57 +54,75 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen relative overflow-hidden bg-black selection:bg-emerald-500/30">
+      {/* Background elements */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-600/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-emerald-900/10 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+
       {/* Left panel */}
-      <div className="hidden flex-col justify-between bg-hero-gradient p-10 text-white lg:flex lg:w-1/2">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20">
-            <Zap className="h-4 w-4 text-white" />
+      <div className="hidden flex-col justify-between p-12 text-white lg:flex lg:w-1/2 relative z-10 border-r border-white/5 bg-black/40 backdrop-blur-sm">
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-emerald-600/20 border border-emerald-500/30 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(10,143,106,0.2)] overflow-hidden">
+            <Image src="/logo.png" alt="UniBridge logo" width={48} height={48} className="h-12 w-12 object-contain" priority />
           </div>
-          <span className="font-bold text-xl">UniBridge</span>
+          <span className="font-bold text-xl tracking-tight uppercase">UniBridge</span>
         </Link>
-        <div>
-          <blockquote className="text-xl font-medium leading-relaxed">
-            "During the last ASUU strike, I kept up with all my courses using UniBridge. The AI
-            summaries saved my semester."
+
+        <div className="max-w-md">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-6">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Active Student Intel
+          </div>
+          <blockquote className="text-2xl font-light leading-relaxed text-neutral-200 italic">
+            &ldquo;The AI systems identified three scholarship opportunities I would have missed entirely. This isn&apos;t just a portal; it&apos;s a success protocol.&rdquo;
           </blockquote>
-          <p className="mt-4 text-white/70">— Tunde Adesanya, 300L Computer Science, UNILAG</p>
+          <div className="mt-8 flex items-center gap-4">
+            <div className="w-10 h-10 rounded-full bg-neutral-800 border border-white/10" />
+            <div>
+              <p className="text-sm font-semibold text-white">Tunde Adesanya</p>
+              <p className="text-xs text-neutral-500">Computer Science • Unilag</p>
+            </div>
+          </div>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+
+        <div className="grid grid-cols-2 gap-4">
           {[
-            { v: "12+", l: "Universities" },
-            { v: "30%", l: "Fewer Missed Classes" },
-            { v: "5 GB", l: "Offline Storage" },
-            { v: "24/7", l: "AI Support" },
-          ].map(({ v, l }) => (
-            <div key={l} className="rounded-xl bg-white/10 p-3">
-              <p className="text-lg font-bold">{v}</p>
-              <p className="text-xs text-white/70">{l}</p>
+            { v: "24/7", l: "System Resilience", i: Users },
+            { v: "10x", l: "Recall Velocity", i: Zap },
+          ].map(({ v, l, i: Icon }) => (
+            <div key={l} className="glass-panel p-4 rounded-xl border-white/5 hover:border-emerald-500/20 transition-all group">
+              <div className="flex items-center gap-3 mb-2">
+                <Icon className="w-4 h-4 text-emerald-500" />
+                <p className="text-xl font-bold tracking-tight text-white">{v}</p>
+              </div>
+              <p className="text-[10px] uppercase tracking-widest text-neutral-500 group-hover:text-neutral-400 transition-colors">{l}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* Right panel */}
-      <div className="flex flex-1 flex-col items-center justify-center px-4 py-12 md:px-8">
+      <div className="flex flex-1 flex-col items-center justify-center px-4 py-12 md:px-8 relative z-10">
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
-          <Link href="/" className="mb-8 flex items-center gap-2 lg:hidden">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand-gradient">
-              <Zap className="h-3.5 w-3.5 text-white" />
+          <Link href="/" className="mb-12 flex items-center gap-3 lg:hidden justify-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-emerald-600/20 border border-emerald-500/30 shadow-[0_0_15px_rgba(10,143,106,0.2)] overflow-hidden">
+              <Image src="/logo.png" alt="UniBridge logo" width={48} height={48} className="h-12 w-12 object-contain" priority />
             </div>
-            <span className="font-bold">UniBridge</span>
+            <span className="font-bold text-xl tracking-tight text-white uppercase">UniBridge</span>
           </Link>
 
-          <h1 className="text-2xl font-bold">Welcome back</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Log in to your virtual campus account.
-          </p>
+          <div className="text-center lg:text-left mb-10">
+            <h1 className="text-3xl font-medium text-white tracking-tight">Access Terminal</h1>
+            <p className="mt-2 text-sm text-neutral-400 font-light">
+              Authorize your session to begin academic operations.
+            </p>
+          </div>
 
           <button
             onClick={handleGoogleLogin}
             disabled={loading}
-            className="mt-6 flex w-full items-center justify-center gap-3 rounded-xl border bg-white py-2.5 text-sm font-medium shadow-sm transition-colors hover:bg-muted disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/5 bg-white/5 py-3 text-sm font-medium text-white transition-all hover:bg-white/10 hover:border-white/15 disabled:opacity-60 shadow-xl"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path
@@ -123,48 +142,48 @@ export default function LoginPage() {
                 fill="#EA4335"
               />
             </svg>
-            Continue with Google
+            Continue with Intel Core
           </button>
 
-          <div className="my-6 flex items-center gap-3">
-            <div className="h-px flex-1 bg-border" />
-            <span className="text-xs text-muted-foreground">or continue with email</span>
-            <div className="h-px flex-1 bg-border" />
+          <div className="my-8 flex items-center gap-4">
+            <div className="h-px flex-1 bg-white/5" />
+            <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-bold">Protocol Auth</span>
+            <div className="h-px flex-1 bg-white/5" />
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="mb-1.5 block text-sm font-medium">Email address</label>
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div className="space-y-1.5">
+              <label className="pl-1 text-[11px] font-bold text-neutral-500 uppercase tracking-widest">Email Address</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                className="w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm outline-none ring-primary/50 transition-shadow focus:ring-2"
+                placeholder="identity@unibridge.sys"
+                className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-neutral-600 outline-none ring-emerald-500/20 transition-all focus:ring-4 focus:border-emerald-500/30"
                 required
               />
             </div>
 
-            <div>
-              <div className="mb-1.5 flex items-center justify-between">
-                <label className="text-sm font-medium">Password</label>
-                <Link href="/auth/forgot-password" className="text-xs text-primary hover:underline">
-                  Forgot password?
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between px-1">
+                <label className="text-[11px] font-bold text-neutral-500 uppercase tracking-widest">Security Key</label>
+                <Link href="/auth/forgot-password" title="Recover Access" className="text-[10px] text-emerald-500 hover:text-emerald-400 transition-colors uppercase tracking-wider font-bold">
+                  Lost Key?
                 </Link>
               </div>
-              <div className="relative">
+              <div className="relative group">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full rounded-xl border bg-white px-3.5 py-2.5 pr-10 text-sm outline-none ring-primary/50 transition-shadow focus:ring-2"
+                  className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 pr-12 text-sm text-white placeholder:text-neutral-600 outline-none ring-emerald-500/20 transition-all focus:ring-4 focus:border-emerald-500/30"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-600 hover:text-emerald-500 transition-colors p-1"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
@@ -175,20 +194,28 @@ export default function LoginPage() {
               type="submit"
               disabled={loading}
               className={cn(
-                "flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60",
+                "group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-emerald-600 py-3.5 text-sm font-bold text-white transition-all hover:bg-emerald-500 active:scale-[0.98] disabled:opacity-60",
+                "shadow-[0_0_20px_rgba(10,143,106,0.3)] hover:shadow-[0_0_25px_rgba(10,143,106,0.5)]"
               )}
             >
-              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-              {loading ? "Logging in..." : "Log in"}
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:animate-shimmer" />
+              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />}
+              {loading ? "INITIALIZING..." : "AUTHORIZE SESSION"}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            Don't have an account?{" "}
-            <Link href="/auth/register" className="font-medium text-primary hover:underline">
-              Sign up free
+          <p className="mt-8 text-center text-xs text-neutral-500 font-light">
+            Need an entry point?{" "}
+            <Link href="/auth/register" className="font-bold text-emerald-500 hover:text-emerald-400 transition-colors hover:underline underline-offset-4">
+              Initialize New Account
             </Link>
           </p>
+        </div>
+
+        <div className="mt-auto pt-8 flex items-center gap-2 text-[10px] text-neutral-600 uppercase tracking-[0.2em] font-medium">
+          <div className="w-1 h-1 rounded-full bg-neutral-800" />
+          UniBridge Systems v1.0.4
+          <div className="w-1 h-1 rounded-full bg-neutral-800" />
         </div>
       </div>
     </div>

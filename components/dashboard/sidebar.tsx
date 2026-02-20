@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import {
@@ -18,7 +19,6 @@ import {
   Video,
   X,
   Shield,
-  Cpu,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
@@ -127,8 +127,15 @@ function SidebarContent({
     <div className="flex h-full flex-col border-r border-white/5 bg-black/40 backdrop-blur-md">
       <div className={cn("flex items-center justify-between border-b border-white/5 px-4 py-6", collapsed ? "px-3" : "px-6")}>
         <Link href="/" className={cn("group flex items-center", collapsed ? "justify-center" : "gap-3")} onClick={onClose} title={collapsed ? "UniBridge" : undefined}>
-          <div className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-[#0A8F6A]/20 bg-[#0A8F6A]/10 transition-all group-hover:bg-[#0A8F6A]/20">
-            <Cpu className="h-6 w-6 text-[#0A8F6A]" />
+          <div className="relative flex h-12 w-12 items-center justify-center rounded-lg border border-[#0A8F6A]/20 bg-[#0A8F6A]/10 transition-all group-hover:bg-[#0A8F6A]/20 overflow-hidden">
+            <Image
+              src="/logo.png"
+              alt="UniBridge logo"
+              width={40}
+              height={40}
+              className="h-10 w-10 object-contain"
+              priority
+            />
           </div>
           {!collapsed && (
             <div className="flex flex-col">

@@ -21,6 +21,11 @@ export const metadata: Metadata = {
   title: "UniBridge | Virtual Campus for Nigerian Universities",
   description:
     "The all-in-one platform bridging the gap between students, resources, and opportunities in the Nigerian university ecosystem.",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

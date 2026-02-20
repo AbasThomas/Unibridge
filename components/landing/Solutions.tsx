@@ -73,27 +73,27 @@ export function Solutions() {
                                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 pb-8 border-b border-white/5 relative z-10">
                                     <div>
                                         <h3 className="text-2xl font-medium text-white mb-2">
-                                            Autonomous Intel
+                                            Smart Lecture Streaming
                                         </h3>
                                         <p className="text-neutral-400 text-sm font-light">
-                                            Qualify and summarize core concepts before they become exam bottlenecks.
+                                            Real-time AI deconstruction and automated concept mapping.
                                         </p>
                                     </div>
                                     <div className="mt-6 md:mt-0 text-left md:text-right">
                                         <span className="block text-3xl font-bold text-white tracking-tight">
-                                            +1,200
+                                            Real-time
                                         </span>
                                         <span className="block text-[10px] uppercase tracking-wider text-[#0A8F6A] font-medium">
-                                            Weekly Data Points
+                                            AI Processing
                                         </span>
                                     </div>
                                 </div>
                                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 relative z-10">
                                     {[
-                                        "24/7 Real-time Concept Qualification",
-                                        "Autonomous Lecture Deconstruction",
-                                        "Multi-channel Resource Enrichment",
-                                        "Precision Q&A Logic Engine",
+                                        "Automated Lecture Summarization",
+                                        "Real-time Insight Generation",
+                                        "Multi-lingual Transcription",
+                                        "Instant Concept Qualification",
                                     ].map((item, idx) => (
                                         <li key={idx} className="flex items-start gap-4 text-sm text-neutral-300">
                                             <div className="mt-0.5 p-0.5 rounded-full bg-[#0A8F6A]/20 text-[#0A8F6A]">
@@ -112,27 +112,27 @@ export function Solutions() {
                                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 pb-8 border-b border-white/5 relative z-10">
                                     <div>
                                         <h3 className="text-2xl font-medium text-white mb-2">
-                                            Verified Knowledge
+                                            Peer Resource Marketplace
                                         </h3>
                                         <p className="text-neutral-400 text-sm font-light">
-                                            The centralized hub for high-yield educational assets.
+                                            Centralized hub for verified, high-yield educational assets.
                                         </p>
                                     </div>
                                     <div className="mt-6 md:mt-0 text-left md:text-right">
                                         <span className="block text-3xl font-bold text-white tracking-tight">
-                                            1k+
+                                            Verified
                                         </span>
                                         <span className="block text-[10px] uppercase tracking-wider text-[#0A8F6A] font-medium">
-                                            Curated Assets
+                                            Academic Assets
                                         </span>
                                     </div>
                                 </div>
                                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 relative z-10">
                                     {[
-                                        "Peer-to-Peer Knowledge Arbitrage",
-                                        "Strategic Past-Question Archives",
-                                        "Interactive Handout Repositories",
-                                        "Encrypted Document Governance",
+                                        "Past Question Archives",
+                                        "Curated Study Guides",
+                                        "Collaborative Note Pools",
+                                        "Quality-Assured Document Hub",
                                     ].map((item, idx) => (
                                         <li key={idx} className="flex items-start gap-4 text-sm text-neutral-300">
                                             <div className="mt-0.5 p-0.5 rounded-full bg-[#0A8F6A]/20 text-[#0A8F6A]">
@@ -151,27 +151,27 @@ export function Solutions() {
                                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 pb-8 border-b border-white/5 relative z-10">
                                     <div>
                                         <h3 className="text-2xl font-medium text-white mb-2">
-                                            Growth Protocols
+                                            Opportunity Matching
                                         </h3>
                                         <p className="text-neutral-400 text-sm font-light">
-                                            Scale your career trajectory with automated opportunity sourcing.
+                                            Automated discovery of scholarships, internships, and gigs.
                                         </p>
                                     </div>
                                     <div className="mt-6 md:mt-0 text-left md:text-right">
                                         <span className="block text-3xl font-bold text-white tracking-tight">
-                                            New
+                                            Precision
                                         </span>
                                         <span className="text-[10px] uppercase tracking-wider text-[#0A8F6A] font-medium">
-                                            Strategic Updates
+                                            Career Alerts
                                         </span>
                                     </div>
                                 </div>
                                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 relative z-10">
                                     {[
                                         "Global Scholarship Surveillance",
-                                        "Remote Internship Pipelines",
-                                        "Direct Research Grant Access",
-                                        "Competitive Landscape Analysis",
+                                        "Curated Internship Pipeline",
+                                        "Skill-Based Gig Recommendations",
+                                        "Automated Career Pathfinding",
                                     ].map((item, idx) => (
                                         <li key={idx} className="flex items-start gap-4 text-sm text-neutral-300">
                                             <div className="mt-0.5 p-0.5 rounded-full bg-[#0A8F6A]/20 text-[#0A8F6A]">

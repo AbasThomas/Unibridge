@@ -1,11 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export function Footer() {
     return (
         <footer className="py-16 border-t border-white/5 text-center bg-black/40 backdrop-blur-md">
-            <div className="flex items-center justify-center gap-3 mb-6 opacity-50"></div>
+            <div className="flex items-center justify-center gap-3 mb-6 opacity-80">
+                <Image
+                    src="/logo.png"
+                    alt="UniBridge logo"
+                    width={56}
+                    height={56}
+                    className="h-14 w-14 object-contain"
+                />
+            </div>
             <p className="text-sm font-semibold text-white tracking-tight mb-2 uppercase">
                 UniBridge Systems
             </p>

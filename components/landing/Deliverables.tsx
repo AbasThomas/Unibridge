@@ -4,10 +4,10 @@ import { useEffect, useRef } from "react";
 
 export function Deliverables() {
     const stats = [
-        { value: "500+", label: "Hours Optimized", desc: "Per semester for our students through automated resource curation." },
-        { value: "10x", label: "Recall Velocity", desc: "Accelerate your learning retention without added cramming." },
-        { value: "24/7", label: "Active Intel", desc: "Systems that never sleep, ensuring no summary or scholarship is lost." },
-        { value: "100%", label: "Academic Clarity", desc: "Complete transparency into your course load with real-time analysis." },
+        { value: "24/7", label: "Academic Resilience", desc: "Systems that never sleep, ensuring no insight or resource is lost." },
+        { value: "10x", label: "Learning Retention", desc: "Accelerate your recall velocity without added cramming effort." },
+        { value: "100%", label: "Quality Education", desc: "Access to verified, peer-reviewed, and high-yield academic assets." },
+        { value: "Global", label: "Reduced Inequality", desc: "Bridging the gap between students and opportunities worldwide." },
     ];
 
     const containerRef = useRef<HTMLDivElement>(null);

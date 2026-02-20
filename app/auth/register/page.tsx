@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Loader2, Zap } from "lucide-react";
@@ -110,35 +111,43 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen relative overflow-hidden bg-black selection:bg-emerald-500/30">
+      {/* Background elements */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-600/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-emerald-900/10 rounded-full blur-[100px] -translate-x-1/2 pointer-events-none" />
+
       {/* Left panel */}
-      <div className="hidden flex-col justify-between bg-hero-gradient p-10 text-white lg:flex lg:w-1/2">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20">
-            <Zap className="h-4 w-4 text-white" />
+      <div className="hidden flex-col justify-between p-12 text-white lg:flex lg:w-1/2 relative z-10 border-r border-white/5 bg-black/40 backdrop-blur-sm">
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-emerald-600/20 border border-emerald-500/30 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(10,143,106,0.2)] overflow-hidden">
+            <Image src="/logo.png" alt="UniBridge logo" width={48} height={48} className="h-12 w-12 object-contain" priority />
           </div>
-          <span className="font-bold text-xl">UniBridge</span>
+          <span className="font-bold text-xl tracking-tight uppercase">UniBridge</span>
         </Link>
 
         <div>
-          <p className="text-3xl font-bold leading-tight">
-            Keep your education alive — no matter what.
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-6">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Infrastructure for Excellence
+          </div>
+          <p className="text-4xl font-medium tracking-tight leading-tight text-white mb-6">
+            Future-Proof Your <br />
+            <span className="text-emerald-500 italic">Academic Trajectory.</span>
           </p>
-          <p className="mt-4 text-white/80">
-            AI summaries, offline access, opportunity matching, and wellness support — all built for
-            Nigerian university students.
+          <p className="text-neutral-400 font-light leading-relaxed max-w-sm">
+            Deploy intelligence systems that organize, summarize, and prioritize your learning resources 24/7.
           </p>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           {[
-            "Free to start — no credit card needed",
-            "Works offline with 1 GB cached storage",
-            "AI summaries in English, Yoruba & Pidgin",
-            "Scholarship & gig matching powered by AI",
+            "Verified Academic Asset Marketplace",
+            "Autonomous Lecture Deconstruction",
+            "Precision Opportunity Sourcing",
+            "Global Research Pipeline Access",
           ].map((feat) => (
-            <div key={feat} className="flex items-center gap-2 text-sm text-white/85">
-              <div className="h-1.5 w-1.5 rounded-full bg-white" />
+            <div key={feat} className="flex items-center gap-4 text-sm text-neutral-300 font-light group">
+              <div className="h-px w-6 bg-emerald-900 group-hover:w-10 group-hover:bg-emerald-500 transition-all duration-500" />
               {feat}
             </div>
           ))}
@@ -146,26 +155,34 @@ export default function RegisterPage() {
       </div>
 
       {/* Right panel */}
-      <div className="flex flex-1 flex-col items-center justify-center px-4 py-12 md:px-8">
-        <div className="w-full max-w-sm">
-          <Link href="/" className="mb-8 flex items-center gap-2 lg:hidden">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand-gradient">
-              <Zap className="h-3.5 w-3.5 text-white" />
+      <div className="flex flex-1 flex-col items-center justify-center px-4 py-12 md:px-8 relative z-10">
+        <div className="w-full max-w-md">
+          <Link href="/" className="mb-12 flex items-center gap-3 lg:hidden justify-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-emerald-600/20 border border-emerald-500/30 shadow-[0_0_15px_rgba(10,143,106,0.2)] overflow-hidden">
+              <Image src="/logo.png" alt="UniBridge logo" width={48} height={48} className="h-12 w-12 object-contain" priority />
             </div>
-            <span className="font-bold">UniBridge</span>
+            <span className="font-bold text-xl tracking-tight text-white uppercase">UniBridge</span>
           </Link>
 
-          <h1 className="text-2xl font-bold">Create your account</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Join your virtual campus — it's free to start.
-          </p>
+          <div className="mb-10">
+            <div className="flex items-center gap-3 mb-4">
+              <div className={cn("h-1 flex-1 rounded-full transition-all duration-500", step >= 1 ? "bg-emerald-500" : "bg-white/5")} />
+              <div className={cn("h-1 flex-1 rounded-full transition-all duration-500", step >= 2 ? "bg-emerald-500" : "bg-white/5")} />
+            </div>
+            <h1 className="text-3xl font-medium text-white tracking-tight">
+              {step === 1 ? "Protocol Initialization" : "Sector Alignment"}
+            </h1>
+            <p className="mt-2 text-sm text-neutral-400 font-light">
+              {step === 1 ? "Start your sequence by authenticating your identity." : "Specify your academic domain to localize intelligence."}
+            </p>
+          </div>
 
           {step === 1 && (
-            <>
+            <div className="animate-soft-fade">
               <button
                 onClick={handleGoogleRegister}
                 disabled={loading}
-                className="mt-6 flex w-full items-center justify-center gap-3 rounded-xl border bg-white py-2.5 text-sm font-medium shadow-sm transition-colors hover:bg-muted disabled:opacity-60"
+                className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/5 bg-white/5 py-3 text-sm font-medium text-white transition-all hover:bg-white/10 hover:border-white/15 disabled:opacity-60 shadow-xl"
               >
                 <svg className="h-5 w-5" viewBox="0 0 24 24">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -173,52 +190,52 @@ export default function RegisterPage() {
                   <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
                   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
                 </svg>
-                Continue with Google
+                Sync with Intel Core
               </button>
 
-              <div className="my-6 flex items-center gap-3">
-                <div className="h-px flex-1 bg-border" />
-                <span className="text-xs text-muted-foreground">or with email</span>
-                <div className="h-px flex-1 bg-border" />
+              <div className="my-8 flex items-center gap-4">
+                <div className="h-px flex-1 bg-white/5" />
+                <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-bold">Registration Flow</span>
+                <div className="h-px flex-1 bg-white/5" />
               </div>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium">Full name</label>
+              <div className="space-y-5">
+                <div className="space-y-1.5">
+                  <label className="pl-1 text-[11px] font-bold text-neutral-500 uppercase tracking-widest">Full Name</label>
                   <input
                     type="text"
                     value={form.name}
                     onChange={(e) => update("name", e.target.value)}
-                    placeholder="Tunde Adesanya"
-                    className="w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm outline-none ring-primary/50 transition-shadow focus:ring-2"
+                    placeholder="Enter full name"
+                    className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-neutral-600 outline-none ring-emerald-500/20 transition-all focus:ring-4 focus:border-emerald-500/30"
                   />
                 </div>
 
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium">Email address</label>
+                <div className="space-y-1.5">
+                  <label className="pl-1 text-[11px] font-bold text-neutral-500 uppercase tracking-widest">Email Address</label>
                   <input
                     type="email"
                     value={form.email}
                     onChange={(e) => update("email", e.target.value)}
-                    placeholder="you@example.com"
-                    className="w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm outline-none ring-primary/50 transition-shadow focus:ring-2"
+                    placeholder="identity@unibridge.sys"
+                    className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-neutral-600 outline-none ring-emerald-500/20 transition-all focus:ring-4 focus:border-emerald-500/30"
                   />
                 </div>
 
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium">Password</label>
+                <div className="space-y-1.5">
+                  <label className="pl-1 text-[11px] font-bold text-neutral-500 uppercase tracking-widest">Security Key</label>
                   <div className="relative">
                     <input
                       type={showPassword ? "text" : "password"}
                       value={form.password}
                       onChange={(e) => update("password", e.target.value)}
                       placeholder="Min. 6 characters"
-                      className="w-full rounded-xl border bg-white px-3.5 py-2.5 pr-10 text-sm outline-none ring-primary/50 transition-shadow focus:ring-2"
+                      className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 pr-12 text-sm text-white placeholder:text-neutral-600 outline-none ring-emerald-500/20 transition-all focus:ring-4 focus:border-emerald-500/30"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-600 hover:text-emerald-500 transition-colors p-1"
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -233,29 +250,29 @@ export default function RegisterPage() {
                     }
                     setStep(2);
                   }}
-                  className="w-full rounded-xl bg-primary py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                  className="w-full rounded-xl bg-emerald-600 py-3.5 text-sm font-bold text-white shadow-[0_0_20px_rgba(10,143,106,0.3)] hover:bg-emerald-500 transition-all hover:shadow-[0_0_25px_rgba(10,143,106,0.5)] active:scale-[0.98]"
                 >
-                  Continue
+                  CONTINUE TO STAGE 02
                 </button>
               </div>
-            </>
+            </div>
           )}
 
           {step === 2 && (
-            <form onSubmit={handleRegister} className="mt-6 space-y-4">
-              <div>
-                <label className="mb-2 block text-sm font-medium">I am a…</label>
-                <div className="grid grid-cols-3 gap-2">
+            <form onSubmit={handleRegister} className="mt-2 space-y-6 animate-soft-fade">
+              <div className="space-y-2">
+                <label className="pl-1 text-[11px] font-bold text-neutral-500 uppercase tracking-widest">Identity Sub-type</label>
+                <div className="grid grid-cols-3 gap-3">
                   {(["student", "lecturer", "admin"] as const).map((role) => (
                     <button
                       key={role}
                       type="button"
                       onClick={() => update("role", role)}
                       className={cn(
-                        "rounded-xl border py-2.5 text-sm font-medium capitalize transition-colors",
+                        "rounded-xl border py-3 text-xs font-bold capitalize transition-all",
                         form.role === role
-                          ? "border-primary bg-accent text-accent-foreground"
-                          : "border-border bg-white hover:bg-muted",
+                          ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-400 shadow-[0_0_15px_rgba(10,143,106,0.1)]"
+                          : "border-white/5 bg-white/5 text-neutral-500 hover:bg-white/10 hover:text-neutral-300",
                       )}
                     >
                       {role}
@@ -264,78 +281,78 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              <div>
-                <label className="mb-1.5 block text-sm font-medium">University</label>
+              <div className="space-y-1.5">
+                <label className="pl-1 text-[11px] font-bold text-neutral-500 uppercase tracking-widest">Primary Institution</label>
                 <select
                   value={form.university}
                   onChange={(e) => update("university", e.target.value)}
-                  className="w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm outline-none ring-primary/50 transition-shadow focus:ring-2"
+                  className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm text-white outline-none ring-emerald-500/20 transition-all focus:ring-4 focus:border-emerald-500/30 appearance-none"
                 >
                   {UNIVERSITIES.map((u) => (
-                    <option key={u} value={u}>{u}</option>
+                    <option key={u} value={u} className="bg-neutral-900">{u}</option>
                   ))}
                 </select>
               </div>
 
-              <div>
-                <label className="mb-1.5 block text-sm font-medium">Department</label>
+              <div className="space-y-1.5">
+                <label className="pl-1 text-[11px] font-bold text-neutral-500 uppercase tracking-widest">Operational Domain</label>
                 <select
                   value={form.department}
                   onChange={(e) => update("department", e.target.value)}
-                  className="w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm outline-none ring-primary/50 transition-shadow focus:ring-2"
+                  className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm text-white outline-none ring-emerald-500/20 transition-all focus:ring-4 focus:border-emerald-500/30 appearance-none"
                 >
                   {DEPARTMENTS.map((d) => (
-                    <option key={d} value={d}>{d}</option>
+                    <option key={d} value={d} className="bg-neutral-900">{d}</option>
                   ))}
                 </select>
               </div>
 
               {form.role === "student" && (
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium">
-                    Matric Number <span className="text-muted-foreground">(optional)</span>
+                <div className="space-y-1.5">
+                  <label className="pl-1 text-[11px] font-bold text-neutral-500 uppercase tracking-widest">
+                    Matriculation Index <span className="text-neutral-700 font-medium">(optional)</span>
                   </label>
                   <input
                     type="text"
                     value={form.matricNumber}
                     onChange={(e) => update("matricNumber", e.target.value)}
                     placeholder="190404001"
-                    className="w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm outline-none ring-primary/50 transition-shadow focus:ring-2"
+                    className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-neutral-600 outline-none ring-emerald-500/20 transition-all focus:ring-4 focus:border-emerald-500/30"
                   />
                 </div>
               )}
 
-              <div className="flex gap-3 pt-2">
+              <div className="flex gap-4 pt-4">
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="flex-1 rounded-xl border py-2.5 text-sm font-medium hover:bg-muted"
+                  className="flex-1 rounded-xl border border-white/10 py-3.5 text-sm font-bold text-neutral-400 hover:bg-white/5 transition-all uppercase tracking-widest"
                 >
-                  Back
+                  REVERT
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+                  className="flex flex-[2] items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3.5 text-sm font-bold text-white shadow-[0_0_20px_rgba(10,143,106,0.3)] hover:bg-emerald-500 transition-all disabled:opacity-60 uppercase tracking-widest active:scale-[0.98]"
                 >
-                  {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-                  {loading ? "Creating..." : "Create account"}
+                  {loading ? <Loader2 className="h-4 w-4 animate-spin text-white" /> : <Zap className="h-4 w-4" />}
+                  {loading ? "PROCESSING..." : "FINALIZE ARCH"}
                 </button>
               </div>
             </form>
           )}
 
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
-            <Link href="/auth/login" className="font-medium text-primary hover:underline">
-              Log in
+          <p className="mt-8 text-center text-xs text-neutral-500 font-light">
+            Already authorized?{" "}
+            <Link href="/auth/login" className="font-bold text-emerald-500 hover:text-emerald-400 transition-colors hover:underline underline-offset-4">
+              Return to Access Terminal
             </Link>
           </p>
 
-          <p className="mt-4 text-center text-xs text-muted-foreground">
-            By signing up you agree to our{" "}
-            <span className="underline cursor-pointer">Terms of Service</span> and{" "}
-            <span className="underline cursor-pointer">Privacy Policy</span>.
+          <p className="mt-6 text-center text-[10px] text-neutral-600 font-medium uppercase tracking-widest leading-relaxed max-w-[280px] mx-auto">
+            By initializing sequence you agree to our{" "}
+            <span className="text-neutral-400 underline cursor-pointer hover:text-white transition-colors">Terms of Op</span> and{" "}
+            <span className="text-neutral-400 underline cursor-pointer hover:text-white transition-colors">Privacy Prot</span>.
           </p>
         </div>
       </div>
