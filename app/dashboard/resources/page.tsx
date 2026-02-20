@@ -345,104 +345,104 @@ export default function ResourcesPage() {
 
       {/* Upload modal */}
       {showUpload && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xl">
+          <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-3xl border border-white/10 bg-black/80 p-6 shadow-2xl">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Upload Resource</h2>
+              <h2 className="text-lg font-medium tracking-tight text-white">Upload Resource</h2>
               <button
                 onClick={() => {
                   setShowUpload(false);
                   setSelectedFile(null);
                 }}
-                className="rounded-lg p-1 hover:bg-muted"
+                className="rounded-full p-2 bg-white/5 border border-white/5 text-neutral-500 hover:text-white transition-all"
               >
                 <XIcon size={16} />
               </button>
             </div>
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="mt-1 text-xs font-light text-neutral-500">
               Your upload will be reviewed by an admin before going live.
             </p>
 
-            <form onSubmit={(e) => void handleUpload(e)} className="mt-4 space-y-4">
+            <form onSubmit={(e) => void handleUpload(e)} className="mt-5 space-y-4">
               <div>
-                <label className="mb-1.5 block text-sm font-medium">File *</label>
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">File *</label>
                 <input
                   type="file"
                   accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.zip"
                   onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null)}
-                  className="w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none ring-primary/50 focus:ring-2"
+                  className="w-full rounded-xl border border-white/10 bg-black/20 px-3.5 py-2.5 text-sm text-neutral-200 outline-none focus:border-[#0A8F6A]/50 transition-colors"
                   required
                 />
                 {selectedFile && (
-                  <p className="mt-1 text-xs text-muted-foreground">
+                  <p className="mt-1 text-xs text-neutral-500">
                     {selectedFile.name} ({formatFileSize(selectedFile.size)})
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="mb-1.5 block text-sm font-medium">Title *</label>
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Title *</label>
                 <input
                   value={uploadForm.title}
                   onChange={(e) => setUploadForm((f) => ({ ...f, title: e.target.value }))}
                   placeholder="Enter resource title"
-                  className="w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none ring-primary/50 focus:ring-2"
+                  className="w-full rounded-xl border border-white/10 bg-black/20 px-3.5 py-2.5 text-sm text-neutral-200 outline-none placeholder:text-neutral-600 focus:border-[#0A8F6A]/50 transition-colors"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium">Type *</label>
+                  <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Type *</label>
                   <select
                     value={uploadForm.type}
                     onChange={(e) => setUploadForm((f) => ({ ...f, type: e.target.value }))}
-                    className="w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none ring-primary/50 focus:ring-2"
+                    className="w-full rounded-xl border border-white/10 bg-black/20 px-3.5 py-2.5 text-sm text-neutral-200 outline-none focus:border-[#0A8F6A]/50 transition-colors"
                   >
-                    {RESOURCE_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+                    {RESOURCE_TYPES.map((t) => <option key={t} value={t} className="bg-neutral-900">{t}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium">Course Code *</label>
+                  <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Course Code *</label>
                   <input
                     value={uploadForm.course_code}
                     onChange={(e) => setUploadForm((f) => ({ ...f, course_code: e.target.value.toUpperCase() }))}
-                    placeholder="Enter course code"
-                    className="w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none ring-primary/50 focus:ring-2"
+                    placeholder="CSC301"
+                    className="w-full rounded-xl border border-white/10 bg-black/20 px-3.5 py-2.5 text-sm text-neutral-200 outline-none placeholder:text-neutral-600 focus:border-[#0A8F6A]/50 transition-colors"
                     required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="mb-1.5 block text-sm font-medium">Department *</label>
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Department *</label>
                 <input
                   value={uploadForm.department}
                   onChange={(e) => setUploadForm((f) => ({ ...f, department: e.target.value }))}
                   placeholder="Enter department"
-                  className="w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none ring-primary/50 focus:ring-2"
+                  className="w-full rounded-xl border border-white/10 bg-black/20 px-3.5 py-2.5 text-sm text-neutral-200 outline-none placeholder:text-neutral-600 focus:border-[#0A8F6A]/50 transition-colors"
                   required
                 />
               </div>
 
               <div>
-                <label className="mb-1.5 block text-sm font-medium">Description</label>
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Description</label>
                 <textarea
                   value={uploadForm.description}
                   onChange={(e) => setUploadForm((f) => ({ ...f, description: e.target.value }))}
                   placeholder="Provide a brief resource description"
                   rows={3}
-                  className="w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none ring-primary/50 focus:ring-2"
+                  className="w-full resize-none rounded-xl border border-white/10 bg-black/20 px-3.5 py-2.5 text-sm text-neutral-200 outline-none placeholder:text-neutral-600 focus:border-[#0A8F6A]/50 transition-colors"
                 />
               </div>
 
               <div>
-                <label className="mb-1.5 block text-sm font-medium">Tags (comma-separated)</label>
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Tags (comma-separated)</label>
                 <input
                   value={uploadForm.tags}
                   onChange={(e) => setUploadForm((f) => ({ ...f, tags: e.target.value }))}
-                  placeholder="Enter tags separated by commas"
-                  className="w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none ring-primary/50 focus:ring-2"
+                  placeholder="e.g. exam prep, revision"
+                  className="w-full rounded-xl border border-white/10 bg-black/20 px-3.5 py-2.5 text-sm text-neutral-200 outline-none placeholder:text-neutral-600 focus:border-[#0A8F6A]/50 transition-colors"
                 />
               </div>
 
@@ -453,14 +453,14 @@ export default function ResourcesPage() {
                     setShowUpload(false);
                     setSelectedFile(null);
                   }}
-                  className="flex-1 rounded-xl border py-2.5 text-sm font-medium hover:bg-muted"
+                  className="flex-1 rounded-xl border border-white/10 bg-white/5 py-2.5 text-xs font-bold uppercase tracking-widest text-neutral-400 hover:text-white transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={uploading}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-white disabled:opacity-60"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#0A8F6A] py-2.5 text-xs font-bold uppercase tracking-widest text-white shadow-lg shadow-emerald-500/20 disabled:opacity-60"
                 >
                   {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
                   {uploading ? "Submitting..." : "Submit for Review"}

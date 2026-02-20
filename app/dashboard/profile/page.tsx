@@ -147,6 +147,12 @@ export default function ProfilePage() {
       return;
     }
 
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image must be smaller than 5 MB.");
+      event.target.value = "";
+      return;
+    }
+
     try {
       setAvatarUploading(true);
       const {
@@ -262,7 +268,7 @@ export default function ProfilePage() {
           <div className="absolute inset-0 bg-black/20"></div>
           <div className="absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-[#0A8F6A]/20 blur-3xl"></div>
         </div>
-        <div className="relative z-10 px-8 pb-8">
+        <div className="relative z-10 px-4 pb-6 sm:px-8 sm:pb-8">
           <div className="flex flex-col items-end justify-between gap-6 sm:flex-row">
             <div className="-mt-12 flex items-end gap-6">
               <div className="group relative">

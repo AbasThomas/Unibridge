@@ -154,7 +154,7 @@ export default function WellnessPage() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-8rem)] gap-6 animate-fade-in">
+    <div className="flex h-[calc(100vh-7rem)] md:h-[calc(100vh-8rem)] gap-6 animate-fade-in">
       {/* Chat area */}
       <div className="flex flex-1 flex-col overflow-hidden rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl shadow-2xl relative">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0A8F6A]/5 to-transparent pointer-events-none"></div>
@@ -176,7 +176,7 @@ export default function WellnessPage() {
         {/* Mood selector */}
         <div className="border-b border-white/5 px-6 py-4 relative z-10">
           <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Current Frequency</p>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-2">
             {MOODS.map(({ id, label, emoji }) => (
               <button
                 key={id}
