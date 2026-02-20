@@ -7,7 +7,7 @@ export function Header() {
     return (
         <header className="fixed top-0 w-full z-50 border-b border-white/5 bg-black/60 backdrop-blur-xl supports-[backdrop-filter]:bg-black/30">
             <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                     <Image
                         src="/logo.png"
                         alt="UniBridge logo"
@@ -16,7 +16,7 @@ export function Header() {
                         className="h-11 w-11 object-contain"
                         priority
                     />
-                    <span className="font-semibold tracking-tighter text-white text-xs uppercase">
+                    <span className="text-lg font-bold tracking-tight text-white uppercase leading-none">
                         UniBridge Systems
                     </span>
                 </div>
