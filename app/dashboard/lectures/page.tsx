@@ -225,11 +225,6 @@ export default function LecturesPage() {
             void addUserPoints(supabase, userId, 5).catch(() => {
               // Joining live session should still work if points update fails.
             });
-
-            // Auto-open the stream URL for students (non-managing participants)
-            if (lecture.stream_url && !canManageLecture(lecture)) {
-              window.open(lecture.stream_url, "_blank", "noopener,noreferrer");
-            }
           }
         });
 
@@ -279,6 +274,29 @@ export default function LecturesPage() {
     const staleAt = new Date(lecture.scheduled_at).getTime() + durationMs + 4 * 60 * 60 * 1000;
     return Date.now() < staleAt;
   };
+
+  const getLectureJoinUrl = (lecture: Lecture): string => {
+    const raw = lecture.stream_url?.trim();
+    if (raw) {
+      if (raw.startsWith("http://") || raw.startsWith("https://")) return raw;
+      if (raw.startsWith("meet.jit.si/")) return `https://${raw}`;
+    }
+
+    const safeId = lecture.id.replace(/[^a-zA-Z0-9-]/g, "");
+    return `https://meet.jit.si/unibridge-${safeId}`;
+  };
+
+  const canEmbedVideoUrl = (url: string): boolean => {
+    try {
+      const parsed = new URL(url);
+      return parsed.hostname === "meet.jit.si" || parsed.hostname.endsWith(".jitsi.net");
+    } catch {
+      return false;
+    }
+  };
+
+  const activeLectureJoinUrl = activeLecture ? getLectureJoinUrl(activeLecture) : "";
+  const activeLectureEmbeddable = activeLectureJoinUrl ? canEmbedVideoUrl(activeLectureJoinUrl) : false;
 
   const filtered = lectures.filter((lecture) => {
     const effectivelyLive = isEffectivelyLive(lecture);
@@ -389,6 +407,7 @@ export default function LecturesPage() {
         setRecordingModal(lecture);
       } else {
         toast.success("Session is now LIVE!");
+        await joinLiveRoom({ ...lecture, is_live: true });
       }
 
       await loadLectures();
@@ -490,14 +509,14 @@ export default function LecturesPage() {
               <p className="mt-1 text-xs text-neutral-400">WebSocket participants: {connectedPeers}</p>
             </div>
             <div className="flex gap-2">
-              {activeLecture.stream_url && (
+              {activeLectureJoinUrl && (
                 <a
-                  href={activeLecture.stream_url}
+                  href={activeLectureJoinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="rounded-lg bg-[#0A8F6A] px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-white"
                 >
-                  Open Stream
+                  Open in New Tab
                 </a>
               )}
               <button
@@ -510,6 +529,42 @@ export default function LecturesPage() {
           </div>
           {!sessionConnected && (
             <p className="mt-2 text-xs text-neutral-400">Connecting to live room...</p>
+          )}
+        </div>
+      )}
+
+      {activeLecture && sessionConnected && (
+        <div className="rounded-2xl border border-white/10 bg-black/30 p-4 shadow-xl">
+          <div className="mb-3 flex items-center justify-between">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-[#0A8F6A] font-bold">Live Video Call</p>
+              <p className="mt-1 text-sm text-white">{activeLecture.title}</p>
+            </div>
+          </div>
+
+          {activeLectureEmbeddable ? (
+            <iframe
+              src={activeLectureJoinUrl}
+              title={`Live call: ${activeLecture.title}`}
+              className="h-[480px] w-full rounded-xl border border-white/10 bg-black"
+              allow="camera; microphone; display-capture; autoplay; clipboard-write"
+            />
+          ) : (
+            <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-neutral-300">
+              <p className="text-xs uppercase tracking-widest text-neutral-500">External Video Provider</p>
+              <p className="mt-2">
+                This stream host blocks in-app embedding. Use{" "}
+                <a
+                  href={activeLectureJoinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#0A8F6A] underline"
+                >
+                  this live link
+                </a>{" "}
+                to join.
+              </p>
+            </div>
           )}
         </div>
       )}
@@ -659,7 +714,7 @@ export default function LecturesPage() {
                 <Cancel01Icon size={18} />
               </button>
             </div>
-            <p className="mt-1 text-xs text-neutral-500">Configure real session details and stream endpoint.</p>
+            <p className="mt-1 text-xs text-neutral-500">Configure session details. Leave stream URL empty to auto-use an in-app Jitsi room.</p>
 
             <form onSubmit={(event) => void handleCreateLecture(event)} className="mt-4 space-y-4">
               <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -707,13 +762,13 @@ export default function LecturesPage() {
               </div>
 
               <div>
-                <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest text-neutral-500">Stream URL</label>
+                <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest text-neutral-500">Video Room URL (Optional)</label>
                 <input
                   type="url"
                   value={lectureForm.stream_url}
                   onChange={(event) => setLectureForm((prev) => ({ ...prev, stream_url: event.target.value }))}
                   className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-2.5 text-sm text-white outline-none focus:border-[#0A8F6A]/50"
-                  placeholder="https://your-live-stream-link"
+                  placeholder="https://meet.jit.si/your-room-name"
                 />
               </div>
 

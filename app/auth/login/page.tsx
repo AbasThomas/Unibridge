@@ -8,6 +8,7 @@ import { ArrowLeft01Icon, ViewIcon, ViewOffIcon } from "hugeicons-react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
+import { getAuthCallbackUrl } from "@/lib/supabase/url";
 import { cn } from "@/lib/utils";
 
 export default function LoginPage() {
@@ -44,7 +45,7 @@ export default function LoginPage() {
       setLoading(true);
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { redirectTo: `${window.location.origin}/auth/callback` },
+        options: { redirectTo: getAuthCallbackUrl() },
       });
       if (error) throw error;
     } catch (err) {

@@ -19,6 +19,7 @@ import {
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
+import { getAuthCallbackUrl } from "@/lib/supabase/url";
 import { cn } from "@/lib/utils";
 import universityDirectory from "@/lib/data/nigerian-universities.json";
 
@@ -65,7 +66,7 @@ export default function RegisterPage() {
       setLoading(true);
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { redirectTo: `${window.location.origin}/auth/callback` },
+        options: { redirectTo: getAuthCallbackUrl() },
       });
       if (error) throw error;
     } catch (err) {
@@ -94,6 +95,7 @@ export default function RegisterPage() {
         email: form.email,
         password: form.password,
         options: {
+          emailRedirectTo: getAuthCallbackUrl(),
           data: {
             full_name: form.name,
             role: form.role,

@@ -55,3 +55,20 @@ Open `http://localhost:3000`.
 - Add `next-pwa` + IndexedDB queueing for full offline sync.
 - Add moderation review queues for admin users.
 - Add Paystack/Flutterwave server-side payment flows.
+
+## Auth callback setup (Supabase + custom domain)
+
+For production at `https://unibridge.pxxl.pro`:
+
+1. Set app env var:
+```bash
+NEXT_PUBLIC_SITE_URL=https://unibridge.pxxl.pro
+```
+
+2. In Supabase Dashboard -> Authentication -> URL Configuration:
+- `Site URL`: `https://unibridge.pxxl.pro`
+- Add Redirect URL: `https://unibridge.pxxl.pro/auth/callback`
+- Keep local redirect URL for development:
+  - `http://localhost:3000/auth/callback`
+
+3. In Google OAuth provider settings (if used), ensure the Supabase provider is enabled and your production domain callback is allowed through Supabase redirect configuration above.

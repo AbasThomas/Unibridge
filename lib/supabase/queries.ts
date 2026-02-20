@@ -291,6 +291,55 @@ export async function createOpportunity(
   return data;
 }
 
+export async function getStudentEvents(
+  supabase: SupabaseClient,
+  filters?: { search?: string; createdBy?: string; includePast?: boolean },
+  limit = 50,
+) {
+  let query = supabase
+    .from("student_events")
+    .select("*")
+    .order("event_date", { ascending: true })
+    .limit(limit);
+
+  if (!filters?.includePast) {
+    query = query.gte("event_date", new Date().toISOString());
+  }
+
+  if (filters?.createdBy) query = query.eq("created_by", filters.createdBy);
+  if (filters?.search) {
+    const q = filters.search.trim();
+    query = query.or(`title.ilike.%${q}%,details.ilike.%${q}%,location.ilike.%${q}%`);
+  }
+
+  const { data, error } = await query;
+  if (error) throw error;
+  return data ?? [];
+}
+
+export async function createStudentEvent(
+  supabase: SupabaseClient,
+  event: {
+    title: string;
+    details?: string;
+    location: string;
+    event_date: string;
+    rsvp_url?: string;
+    created_by: string;
+    created_by_name?: string;
+    university?: string;
+    is_virtual?: boolean;
+  },
+) {
+  const { data, error } = await supabase
+    .from("student_events")
+    .insert(event)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
 // ─── Notifications ────────────────────────────────────────────────────────────
 
 export async function getNotifications(supabase: SupabaseClient, userId: string, limit = 20) {
@@ -409,12 +458,17 @@ export async function getAllUsers(supabase: SupabaseClient, limit = 50) {
   return data ?? [];
 }
 
-export async function getLeaderboard(supabase: SupabaseClient, limit = 20) {
-  const { data, error } = await supabase
+export async function getLeaderboard(supabase: SupabaseClient, limit?: number) {
+  let query = supabase
     .from("profiles")
     .select("id, name, university, points, avatar")
-    .order("points", { ascending: false })
-    .limit(limit);
+    .order("points", { ascending: false });
+
+  if (typeof limit === "number") {
+    query = query.limit(limit);
+  }
+
+  const { data, error } = await query;
   if (error) throw error;
   return data ?? [];
 }

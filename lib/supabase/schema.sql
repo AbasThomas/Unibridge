@@ -31,6 +31,9 @@ create policy "Users can update their own profile"
 create policy "Users can insert their own profile"
   on public.profiles for insert with check (auth.uid() = id);
 
+create policy "Authenticated users can view public profiles"
+  on public.profiles for select using (auth.role() = 'authenticated');
+
 -- Auto-create profile on sign-up
 create or replace function public.handle_new_user()
 returns trigger as $$
@@ -211,6 +214,44 @@ create policy "Admins can manage opportunities"
   ));
 
 -- ------------------------------------------------------------
+create table if not exists public.student_events (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  details text default '',
+  location text not null default '',
+  event_date timestamptz not null,
+  rsvp_url text default '',
+  created_by uuid references public.profiles(id) on delete set null,
+  created_by_name text default '',
+  university text default '',
+  is_virtual boolean default false,
+  created_at timestamptz default now()
+);
+
+alter table public.student_events enable row level security;
+
+create policy "Student events viewable by everyone"
+  on public.student_events for select using (true);
+
+create policy "Authenticated users can create student events"
+  on public.student_events for insert
+  with check (auth.uid() = created_by);
+
+create policy "Users can update their own student events"
+  on public.student_events for update
+  using (auth.uid() = created_by);
+
+create policy "Users can delete their own student events"
+  on public.student_events for delete
+  using (auth.uid() = created_by);
+
+create policy "Admins can manage student events"
+  on public.student_events for all
+  using (exists (
+    select 1 from public.profiles where id = auth.uid() and role = 'admin'
+  ));
+
+-- ------------------------------------------------------------
 create table if not exists public.notifications (
   id uuid primary key default gen_random_uuid(),
   user_id uuid references public.profiles(id) on delete cascade not null,
@@ -255,3 +296,4 @@ alter publication supabase_realtime add table public.notifications;
 alter publication supabase_realtime add table public.resources;
 alter publication supabase_realtime add table public.chat_messages;
 alter publication supabase_realtime add table public.opportunities;
+alter publication supabase_realtime add table public.student_events;

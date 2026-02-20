@@ -20,6 +20,7 @@ type LeaderboardUser = {
   name: string;
   university: string;
   points: number;
+  badges: number;
   avatar?: string;
 };
 
@@ -38,6 +39,14 @@ type BadgeCard = {
   target: number;
   icon: React.ElementType;
 };
+
+function getBadgeCountFromPoints(points: number): number {
+  if (points >= 700) return 4;
+  if (points >= 450) return 3;
+  if (points >= 250) return 2;
+  if (points >= 100) return 1;
+  return 0;
+}
 
 export default function GamificationPage() {
   const [loading, setLoading] = useState(true);
@@ -86,7 +95,7 @@ export default function GamificationPage() {
             .eq("user_id", user.id)
             .eq("role", "user")
             .limit(500),
-          getLeaderboard(supabase, 15),
+          getLeaderboard(supabase),
         ]);
 
         setName(profileRes.data?.name ?? user.email?.split("@")[0] ?? "Student");
@@ -103,7 +112,18 @@ export default function GamificationPage() {
           wellnessDays: distinctWellnessDays.size,
         });
 
-        setLeaderboard((leaderboardRes ?? []) as LeaderboardUser[]);
+        const rankedLeaderboard = (leaderboardRes ?? [])
+          .map((entry) => ({
+            ...entry,
+            badges: getBadgeCountFromPoints(entry.points ?? 0),
+          }))
+          .sort((a, b) => {
+            if (b.points !== a.points) return b.points - a.points;
+            if (b.badges !== a.badges) return b.badges - a.badges;
+            return (a.name ?? "").localeCompare(b.name ?? "");
+          }) as LeaderboardUser[];
+
+        setLeaderboard(rankedLeaderboard);
       } finally {
         setLoading(false);
       }
@@ -235,7 +255,7 @@ export default function GamificationPage() {
         <div className="rounded-2xl border border-white/10 bg-black/30 p-6 shadow-xl">
           <div className="mb-4 flex items-center gap-2">
             <RankingIcon size={22} className="text-[#0A8F6A]" />
-            <h2 className="text-lg font-medium text-white">Leaderboard</h2>
+            <h2 className="text-lg font-medium text-white">Userboard</h2>
           </div>
           <div className="space-y-3">
             {leaderboard.length === 0 ? (
@@ -255,9 +275,14 @@ export default function GamificationPage() {
                     <p className="text-sm font-medium text-white">#{index + 1} {entry.name || "User"}</p>
                     <p className="text-[10px] uppercase tracking-widest text-neutral-500">{entry.university || "Institution not set"}</p>
                   </div>
-                  <div className="flex items-center gap-2 text-[#0A8F6A]">
-                    <UserGroupIcon size={18} />
-                    <span className="text-sm font-bold">{entry.points}</span>
+                  <div className="text-right">
+                    <div className="flex items-center justify-end gap-2 text-[#0A8F6A]">
+                      <UserGroupIcon size={18} />
+                      <span className="text-sm font-bold">{entry.points}</span>
+                    </div>
+                    <p className="mt-1 text-[10px] uppercase tracking-widest text-neutral-500">
+                      {entry.badges} badges
+                    </p>
                   </div>
                 </div>
               ))
