@@ -23,6 +23,7 @@ import {
   createLecture,
   getLectures,
   setLectureLiveStatus,
+  updateLecture,
   updateLectureAttendees,
 } from "@/lib/supabase/queries";
 import { formatDateTime, cn } from "@/lib/utils";
@@ -92,6 +93,11 @@ export default function LecturesPage() {
   const [activeLecture, setActiveLecture] = useState<Lecture | null>(null);
   const [connectedPeers, setConnectedPeers] = useState(0);
   const [sessionConnected, setSessionConnected] = useState(false);
+
+  // Recording modal – shown to the lecturer after ending a live session
+  const [recordingModal, setRecordingModal] = useState<Lecture | null>(null);
+  const [recordingUrlInput, setRecordingUrlInput] = useState("");
+  const [savingRecording, setSavingRecording] = useState(false);
 
   const roomChannelRef = useRef<RealtimeChannel | null>(null);
   const createIntentHandledRef = useRef(false);
@@ -179,7 +185,7 @@ export default function LecturesPage() {
         toast.error("Please sign in to join a live session.");
         return;
       }
-      if (!lecture.is_live) {
+      if (!isEffectivelyLive(lecture)) {
         toast.error("This session is not live yet.");
         return;
       }
@@ -219,6 +225,11 @@ export default function LecturesPage() {
             void addUserPoints(supabase, userId, 5).catch(() => {
               // Joining live session should still work if points update fails.
             });
+
+            // Auto-open the stream URL for students (non-managing participants)
+            if (lecture.stream_url && !canManageLecture(lecture)) {
+              window.open(lecture.stream_url, "_blank", "noopener,noreferrer");
+            }
           }
         });
 
@@ -259,7 +270,19 @@ export default function LecturesPage() {
     }
   }, [canCreateLecture, searchParams]);
 
+  // A session is only truly live if the DB says so AND it was scheduled
+  // recently enough that it could still be running (duration + 4h buffer).
+  // This prevents stale is_live=true rows from showing as LIVE in the UI.
+  const isEffectivelyLive = (lecture: Lecture): boolean => {
+    if (!lecture.is_live) return false;
+    const durationMs = (lecture.duration ?? 60) * 60 * 1000;
+    const staleAt = new Date(lecture.scheduled_at).getTime() + durationMs + 4 * 60 * 60 * 1000;
+    return Date.now() < staleAt;
+  };
+
   const filtered = lectures.filter((lecture) => {
+    const effectivelyLive = isEffectivelyLive(lecture);
+
     const matchesSearch =
       !search ||
       lecture.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -268,8 +291,8 @@ export default function LecturesPage() {
 
     const matchesTab =
       tab === "all" ||
-      (tab === "live" && lecture.is_live) ||
-      (tab === "upcoming" && !lecture.is_live && !lecture.is_recorded && new Date(lecture.scheduled_at) > new Date()) ||
+      (tab === "live" && effectivelyLive) ||
+      (tab === "upcoming" && !effectivelyLive && !lecture.is_recorded && new Date(lecture.scheduled_at) > new Date()) ||
       (tab === "recorded" && lecture.is_recorded);
 
     return matchesSearch && matchesTab;
@@ -352,12 +375,20 @@ export default function LecturesPage() {
     if (!canManageLecture(lecture)) return;
 
     try {
-      await setLectureLiveStatus(supabase, lecture.id, !lecture.is_live);
-      toast.success(lecture.is_live ? "Lecture marked as ended." : "Lecture is now live.");
+      const wasLive = lecture.is_live;
+      await setLectureLiveStatus(supabase, lecture.id, !wasLive);
 
-      if (lecture.is_live && activeLecture?.id === lecture.id && roomChannelRef.current) {
-        await roomChannelRef.current.send({ type: "broadcast", event: "session-stopped" });
-        await leaveLiveRoom();
+      if (wasLive) {
+        toast.success("Live session ended.");
+        // Broadcast end event to all room participants
+        if (activeLecture?.id === lecture.id && roomChannelRef.current) {
+          await roomChannelRef.current.send({ type: "broadcast", event: "session-stopped", payload: {} });
+          await leaveLiveRoom();
+        }
+        // Prompt the lecturer to add a recording URL
+        setRecordingModal(lecture);
+      } else {
+        toast.success("Session is now LIVE!");
       }
 
       await loadLectures();
@@ -366,9 +397,28 @@ export default function LecturesPage() {
     }
   };
 
+  const handleSaveRecording = async () => {
+    if (!recordingModal) return;
+    setSavingRecording(true);
+    try {
+      await updateLecture(supabase, recordingModal.id, {
+        is_recorded: true,
+        recording_url: recordingUrlInput.trim(),
+      });
+      toast.success("Recording URL saved. Session is now in Recorded tab.");
+      setRecordingModal(null);
+      setRecordingUrlInput("");
+      await loadLectures();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not save recording.");
+    } finally {
+      setSavingRecording(false);
+    }
+  };
+
   const TABS: { id: Tab; label: string; count?: number }[] = [
     { id: "all", label: "All", count: lectures.length },
-    { id: "live", label: "Live", count: lectures.filter((lecture) => lecture.is_live).length },
+    { id: "live", label: "Live", count: lectures.filter(isEffectivelyLive).length },
     { id: "upcoming", label: "Upcoming" },
     { id: "recorded", label: "Recorded", count: lectures.filter((lecture) => lecture.is_recorded).length },
   ];
@@ -480,7 +530,9 @@ export default function LecturesPage() {
         </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((lecture) => (
+          {filtered.map((lecture) => {
+            const effectiveLive = isEffectivelyLive(lecture);
+            return (
             <div
               key={lecture.id}
               className="glass-panel flex flex-col rounded-2xl p-6 shadow-2xl group hover:border-[#0A8F6A]/30 transition-all duration-500"
@@ -489,13 +541,13 @@ export default function LecturesPage() {
                 <div
                   className={cn(
                     "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white shadow-lg",
-                    lecture.is_live ? "bg-red-500 shadow-red-500/20 animate-pulse" : "bg-[#0A8F6A] shadow-emerald-500/20",
+                    effectiveLive ? "bg-red-500 shadow-red-500/20 animate-pulse" : "bg-[#0A8F6A] shadow-emerald-500/20",
                   )}
                 >
-                  {lecture.is_live ? <SignalIcon size={24} /> : <VideoReplayIcon size={24} />}
+                  {effectiveLive ? <SignalIcon size={24} /> : <VideoReplayIcon size={24} />}
                 </div>
                 <div className="flex flex-wrap gap-1">
-                  {lecture.is_live && (
+                  {effectiveLive && (
                     <span className="rounded-full bg-red-500/10 border border-red-500/20 px-3 py-1 text-[10px] font-bold text-red-500 tracking-widest uppercase">
                       LIVE
                     </span>
@@ -541,7 +593,7 @@ export default function LecturesPage() {
               )}
 
               <div className="mt-6 flex flex-wrap gap-2">
-                {lecture.is_live ? (
+                {effectiveLive ? (
                   <button
                     onClick={() => void joinLiveRoom(lecture)}
                     className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-red-500 px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-white hover:bg-red-600 transition-all shadow-lg shadow-red-500/20"
@@ -581,16 +633,17 @@ export default function LecturesPage() {
                     onClick={() => void toggleLiveState(lecture)}
                     className={cn(
                       "flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest text-white transition-all",
-                      lecture.is_live ? "bg-red-600 hover:bg-red-700" : "bg-[#0A8F6A] hover:opacity-90",
+                      effectiveLive ? "bg-red-600 hover:bg-red-700" : "bg-[#0A8F6A] hover:opacity-90",
                     )}
                   >
                     <SignalIcon size={14} />
-                    {lecture.is_live ? "End" : "Go Live"}
+                    {effectiveLive ? "End" : "Go Live"}
                   </button>
                 )}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -702,6 +755,56 @@ export default function LecturesPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Recording URL Modal – shown to lecturer after ending a live session */}
+      {recordingModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-black/90 p-6 shadow-2xl">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-semibold text-white">Session Ended</h2>
+                <p className="mt-0.5 truncate text-xs text-neutral-500 max-w-xs">{recordingModal.title}</p>
+              </div>
+              <button
+                onClick={() => { setRecordingModal(null); setRecordingUrlInput(""); }}
+                className="rounded-lg p-1 text-neutral-400 hover:text-white"
+              >
+                <Cancel01Icon size={18} />
+              </button>
+            </div>
+            <div className="mt-4 rounded-xl bg-[#0A8F6A]/5 border border-[#0A8F6A]/20 p-4 text-xs text-neutral-300">
+              Your live session has ended. Paste a recording link below so students can watch it later — or skip to leave it as ended.
+            </div>
+            <div className="mt-4">
+              <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest text-neutral-500">
+                Recording URL (optional)
+              </label>
+              <input
+                type="url"
+                value={recordingUrlInput}
+                onChange={(e) => setRecordingUrlInput(e.target.value)}
+                className="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-2.5 text-sm text-white outline-none focus:border-[#0A8F6A]/50"
+                placeholder="https://youtube.com/watch?v=... or Google Drive link"
+              />
+            </div>
+            <div className="mt-4 flex gap-3">
+              <button
+                onClick={() => { setRecordingModal(null); setRecordingUrlInput(""); }}
+                className="flex-1 rounded-xl border border-white/10 bg-white/5 py-2.5 text-sm text-neutral-300"
+              >
+                Skip
+              </button>
+              <button
+                onClick={() => void handleSaveRecording()}
+                disabled={savingRecording || !recordingUrlInput.trim()}
+                className="flex-1 rounded-xl bg-[#0A8F6A] py-2.5 text-sm font-semibold text-white disabled:opacity-60"
+              >
+                {savingRecording ? "Saving..." : "Save Recording"}
+              </button>
+            </div>
           </div>
         </div>
       )}

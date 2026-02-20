@@ -158,6 +158,21 @@ export async function updateLectureAttendees(
   if (error) throw error;
 }
 
+export async function deleteLecture(supabase: SupabaseClient, lectureId: string) {
+  const { error } = await supabase.from("lectures").delete().eq("id", lectureId);
+  if (error) throw error;
+}
+
+export async function getLecturerLectures(supabase: SupabaseClient, lecturerId: string) {
+  const { data, error } = await supabase
+    .from("lectures")
+    .select("*")
+    .eq("lecturer_id", lecturerId)
+    .order("scheduled_at", { ascending: false });
+  if (error) throw error;
+  return data ?? [];
+}
+
 // ─── Resources ───────────────────────────────────────────────────────────────
 
 export async function getResources(
