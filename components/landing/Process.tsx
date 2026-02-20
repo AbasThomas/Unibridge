@@ -44,10 +44,10 @@ export function Process() {
                     <div className="hidden md:block absolute top-6 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent -z-10"></div>
 
                     {[
-                        { num: "01", title: "Access Initialization", desc: "Secure your terminal and authenticate your student profile.", highlight: false },
-                        { num: "02", title: "Blueprint Analysis", desc: "Select your institution and academic level for localized intel.", highlight: false },
-                        { num: "03", title: "Logic Deployment", desc: "Initialize specialized AI agents to scan and structure your course load.", highlight: true },
-                        { num: "04", title: "Precision Scaling", desc: "Thrive with autonomous resource curation and opportunity alerts.", highlight: false },
+                        { num: "01", title: "Identity Initialization", desc: "Provision your secure profile to access the ecosystem.", highlight: false },
+                        { num: "02", title: "Parameter Calibration", desc: "Configure institutional and departmental parameters for localized intelligence.", highlight: false },
+                        { num: "03", title: "Algorithmic Deployment", desc: "Initialize specialized intelligence algorithms to map and synthesize your academic load.", highlight: true },
+                        { num: "04", title: "Autonomous Scaling", desc: "Scale your capabilities with continuous resource curation and real-time opportunity telemetry.", highlight: false },
                     ].map((step, index) => (
                         <div
                             key={index}

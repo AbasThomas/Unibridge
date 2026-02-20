@@ -30,6 +30,9 @@ export function Header() {
                     <Link href="#solutions" className="hover:text-white transition-colors duration-300">
                         Architecture
                     </Link>
+                    <Link href="#pricing" className="hover:text-white transition-colors duration-300">
+                        Pricing
+                    </Link>
                 </nav>
                 <div className="hidden md:flex items-center gap-4">
                     <Link

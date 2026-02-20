@@ -83,10 +83,10 @@ export default function LoginPage() {
         <div className="max-w-md">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-6">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            Active Student Intel
+            Live Network Telemetry
           </div>
           <blockquote className="text-2xl font-light leading-relaxed text-neutral-200 italic">
-            &ldquo;The AI systems identified three scholarship opportunities I would have missed entirely. This isn&apos;t just a portal; it&apos;s a success protocol.&rdquo;
+            &ldquo;The autonomous intelligence systems identified precise opportunities tailored to my trajectory. This operates beyond a portal; it is a definitive framework for academic acceleration.&rdquo;
           </blockquote>
           <div className="mt-8 flex items-center gap-4">
             <div className="w-10 h-10 rounded-full bg-neutral-800 border border-white/10" />
@@ -129,9 +129,9 @@ export default function LoginPage() {
             </Link>
 
             <div className="text-center lg:text-left mb-10 mt-8 lg:mt-0">
-              <h1 className="text-3xl font-medium text-white tracking-tight">Welcome Back</h1>
+              <h1 className="text-3xl font-medium text-white tracking-tight">Secure Authentication</h1>
               <p className="mt-2 text-sm text-neutral-400 font-light">
-                Log in to your UniBridge account to continue.
+                Authenticate to access your intelligent academic ecosystem.
               </p>
             </div>
 
@@ -158,12 +158,12 @@ export default function LoginPage() {
                   fill="#EA4335"
                 />
               </svg>
-              Continue with Intel Core
+              Authenticate via Google Identity
             </button>
 
             <div className="my-8 flex items-center gap-4">
               <div className="h-px flex-1 bg-white/5" />
-              <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-bold">Or continue with email</span>
+              <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-bold">Secure Email Authentication</span>
               <div className="h-px flex-1 bg-white/5" />
             </div>
 
@@ -216,14 +216,14 @@ export default function LoginPage() {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:animate-shimmer" />
                 {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ZapIcon size={16} />}
-                {loading ? "AUTHENTICATING..." : "LOG IN NOW"}
+                {loading ? "AUTHENTICATING..." : "AUTHENTICATE SESSION"}
               </button>
             </form>
 
             <p className="mt-8 text-center text-xs text-neutral-500 font-light">
-              Don't have an account?{" "}
+              Require network access?{" "}
               <Link href="/auth/register" className="font-bold text-emerald-500 hover:text-emerald-400 transition-colors hover:underline underline-offset-4">
-                Sign up today
+                Provision a new identity
               </Link>
             </p>
           </div>

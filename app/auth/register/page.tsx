@@ -139,14 +139,14 @@ export default function RegisterPage() {
       <div>
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-6">
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          Infrastructure for Excellence
+          Enterprise Academic Infrastructure
         </div>
         <p className="text-4xl font-medium tracking-tight leading-tight text-white mb-6">
-          Future-Proof Your <br />
+          Accelerate Your <br />
           <span className="text-emerald-500 italic">Academic Trajectory.</span>
         </p>
         <p className="text-neutral-400 font-light leading-relaxed max-w-sm">
-          Deploy intelligence systems that organize, summarize, and prioritize your learning resources 24/7.
+          Deploy autonomous intelligence systems tailored to organize, synthesize, and prioritize your academic corpus with consistent 24/7 uptime.
         </p>
       </div>
 
@@ -185,10 +185,10 @@ export default function RegisterPage() {
               <div className={cn("h-1 flex-1 rounded-full transition-all duration-500", step >= 2 ? "bg-emerald-500" : "bg-white/5")} />
             </div>
             <h1 className="text-3xl font-medium text-white tracking-tight">
-              {step === 1 ? "Create Account" : "Academic Details"}
+              {step === 1 ? "Initialize Account Provisioning" : "Academic Credentials"}
             </h1>
             <p className="mt-2 text-sm text-neutral-400 font-light">
-              {step === 1 ? "Join UniBridge to access intelligent academic tools." : "Tell us about your academic role to personalize your experience."}
+              {step === 1 ? "Establish your identity within the UniBridge ecosystem to access advanced algorithmic tools." : "Provide your academic designation to calibrate your workspace telemetry."}
             </p>
           </div>
 
@@ -205,12 +205,12 @@ export default function RegisterPage() {
                   <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
                   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
                 </svg>
-                Sync with Intel Core
+                Provision via Google Identity
               </button>
 
               <div className="my-8 flex items-center gap-4">
                 <div className="h-px flex-1 bg-white/5" />
-                <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-bold">Or register with email</span>
+                <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-bold">Provision via Secure Credentials</span>
                 <div className="h-px flex-1 bg-white/5" />
               </div>
 
@@ -267,7 +267,7 @@ export default function RegisterPage() {
                   }}
                   className="w-full rounded-xl bg-emerald-600 py-3.5 text-sm font-bold text-white shadow-[0_0_20px_rgba(10,143,106,0.3)] hover:bg-emerald-500 transition-all hover:shadow-[0_0_25px_rgba(10,143,106,0.5)] active:scale-[0.98]"
                 >
-                  CONTINUE TO STEP 2
+                  PROCEED TO ALLOCATION
                 </button>
               </div>
             </div>
@@ -276,7 +276,7 @@ export default function RegisterPage() {
           {step === 2 && (
             <form onSubmit={handleRegister} className="mt-2 space-y-6 animate-soft-fade">
               <div className="space-y-2">
-                <label className="pl-1 text-[11px] font-bold text-neutral-500 uppercase tracking-widest">I am a...</label>
+                <label className="pl-1 text-[11px] font-bold text-neutral-500 uppercase tracking-widest">Designate Access Tier</label>
                 <div className="grid grid-cols-3 gap-3">
                   {(["student", "lecturer", "admin"] as const).map((role) => (
                     <button
@@ -351,7 +351,7 @@ export default function RegisterPage() {
                   className="flex flex-[2] items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3.5 text-sm font-bold text-white shadow-[0_0_20px_rgba(10,143,106,0.3)] hover:bg-emerald-500 transition-all disabled:opacity-60 uppercase tracking-widest active:scale-[0.98]"
                 >
                   {loading ? <Loader2 className="h-4 w-4 animate-spin text-white" /> : <ZapIcon size={16} />}
-                  {loading ? "CREATING..." : "CREATE ACCOUNT"}
+                  {loading ? "PROVISIONING..." : "AUTHORIZE PROVISIONING"}
                 </button>
               </div>
             </form>
